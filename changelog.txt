@@ -1,0 +1,48 @@
+Patch 0.2
+
+   X   Make user inputs not case sensitive
+   X   Add all racial starter zones and zones in-between
+   X   Add the offhand slot
+   X   Ten times more NPCs of all types
+   X   More utility spells
+   X   Add enemy types and moves
+   X   Non-combat abilities castable outside of combat
+   X   Basic questing system
+   X   Companion system
+   X   Populate more cities
+   X       Hylonia
+   X       Iklistzefon
+   X       Tellayl
+   X       Redrock
+   X       Goldstar
+   X       Draenin
+   X   A leveling system (influences your stats and spell damage)
+   X   Enumerating statuses on the inspect screen
+   X   Passive mana and hp regen
+   X   Adding physical abilities
+   X   The first dungeon (Estate Thornhaart)
+   X   A quest at the human college to fetch the enchanting rune
+
+Patch 0.3 (Current)
+
+   X   Health bars and refreshing screen
+   X   Shorthand symbols for commands
+   X   Special keyword based dialogue
+   X   Weapon types in attacks
+   X   Rarity colors (white > green > blue > purple)
+   X   Teleport NPCs between the contents
+   X   Add some new races
+   X   Some classes are race specific
+   X   Talent point system
+   X   Priests can full heal you in every major city
+   X   Time system with day and night cycle
+   X       Every turn is 5 minutes
+   X       Traveling from zone to zone is 1 hour
+   X       Using flight takes 1 day
+   X       Sleeping takes 8 hours
+   X   A total of 10 tips
+   X   Talents actually functional
+       Many more quests
+       Faction dislikes (Dragons attack Humans, etc.)
+       Add the commented out races
+       Add some new cities
