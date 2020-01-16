@@ -434,9 +434,10 @@ def spellbook(caster_spells):
         elif caster_spells[i].flavor == "Holy": color = "\033[1;33;40m"
         elif caster_spells[i].flavor == "Shadow": color = "\033[0;35;40m"
         else: color = "\033[1;37;40m"
-        cost_diaplay = ""
-        if caster_spells[i].effect in ["heal", "direct", "burn", "poison"]:
-            cost_display = " " + str(caster_spells[i].damage) + "*LVL DMG. " + str(caster_spells[i].cost) + " MP."
+        if caster_spells[i].effect in ["heal", "direct", "burn", "poison", "absorblife"]:
+            cost_display = " " + str(caster_spells[i].damage) + " DMG. " + str(caster_spells[i].cost) + " MP."
+        else:
+            cost_display = " " + str(caster_spells[i].cost) + " MP."
         print("    " + color + "(" + caster_spells[i].flavor + ")\033[0m " + caster_spells[i].name + ": " + caster_spells[i].description + cost_display)
 
 
@@ -467,7 +468,7 @@ class Set:
 
 
 class Inventory:
-    def __init__(self, name, plural, category, magnitude, description, quantity, price):
+    def __init__(self, name, plural, category, magnitude, description, quantity, price, quality):
         self.name = name
         self.plural = plural
         self.category = category
@@ -475,10 +476,11 @@ class Inventory:
         self.description = description
         self.quantity = quantity
         self.price = price
+        self.quality = quality
 
 
-Fists = Inventory("Fists", "Fists", "Weapon", [0, 0, 0, 0], "Shake them angrily.", 0, 0)
-Nothing = Inventory("Nothing", "Nothing", "Armor", [0, 0, 0, 0], "As naked as the day you were born.", 0, 0)
+Fists = Inventory("Fists", "Fists", "Weapon", [0, 0, 0, 0], "Shake them angrily.", 0, 0, "Common")
+Nothing = Inventory("Nothing", "Nothing", "Armor", [0, 0, 0, 0], "As naked as the day you were born.", 0, 0, "Common")
 
 
 def use_item(item, user, target):
@@ -832,15 +834,112 @@ def inspect_equipment(user):
         print("- You're knocked out!")
     if "impaled" in user.status:
         print("- There's something in your chest!!")
-    print("Head:", user.set.head.name)
-    print("Neck:", user.set.neck.name)
-    print("Chest:", user.set.chest.name)
-    print("Back:", user.set.back.name)
-    print("Hands:", user.set.hands.name)
-    print("Legs:", user.set.legs.name)
-    print("Feet:", user.set.feet.name)
-    print("Weapon:", user.set.weapon.name)
-    print("Offhand:", user.set.offhand.name)
+    # color definitions
+    junk = "\033[1;30;40m"
+    green = "\033[1;32;40m"
+    blue = "\033[1;36;40m"
+    purple = "\033[0;35;40m"
+    end = "\033[0m"
+    # now begins the real grind lol
+    if user.set.head.quality == "Junk":
+        print("Head:", junk, user.set.head.name, end)
+    elif user.set.head.quality == "Uncommon":
+        print("Head:", green, user.set.head.name, end)
+    elif user.set.head.quality == "Rare":
+        print("Head:", blue, user.set.head.name, end)
+    elif user.set.head.quality == "Epic":
+        print("Head:", purple, user.set.head.name, end)
+    else:
+        print("Head:", user.set.head.name, end)
+
+    if user.set.neck.quality == "Junk":
+        print("Neck:", junk, user.set.neck.name, end)
+    elif user.set.neck.quality == "Uncommon":
+        print("Neck:", green, user.set.neck.name, end)
+    elif user.set.neck.quality == "Rare":
+        print("Neck:", blue, user.set.neck.name, end)
+    elif user.set.neck.quality == "Epic":
+        print("Neck:", purple, user.set.neck.name, end)
+    else:
+        print("Neck:", user.set.neck.name, end)
+
+    if user.set.chest.quality == "Junk":
+        print("Chest:", junk, user.set.chest.name, end)
+    elif user.set.chest.quality == "Uncommon":
+        print("Chest:", green, user.set.chest.name, end)
+    elif user.set.chest.quality == "Rare":
+        print("Chest:", blue, user.set.chest.name, end)
+    elif user.set.chest.quality == "Epic":
+        print("Chest:", purple, user.set.chest.name, end)
+    else:
+        print("Chest:", user.set.chest.name, end)
+        
+    if user.set.back.quality == "Junk":
+        print("Back:", junk, user.set.back.name, end)
+    elif user.set.back.quality == "Uncommon":
+        print("Back:", green, user.set.back.name, end)
+    elif user.set.back.quality == "Rare":
+        print("Back:", blue, user.set.back.name, end)
+    elif user.set.back.quality == "Epic":
+        print("Back:", purple, user.set.back.name, end)
+    else:
+        print("Back:", user.set.back.name, end)
+
+    if user.set.hands.quality == "Junk":
+        print("Hands:", junk, user.set.hands.name, end)
+    elif user.set.hands.quality == "Uncommon":
+        print("Hands:", green, user.set.hands.name, end)
+    elif user.set.hands.quality == "Rare":
+        print("Hands:", blue, user.set.hands.name, end)
+    elif user.set.hands.quality == "Epic":
+        print("Hands:", purple, user.set.hands.name, end)
+    else:
+        print("Hands:", user.set.hands.name, end)
+
+    if user.set.legs.quality == "Junk":
+        print("Legs:", junk, user.set.legs.name, end)
+    elif user.set.legs.quality == "Uncommon":
+        print("Legs:", green, user.set.legs.name, end)
+    elif user.set.legs.quality == "Rare":
+        print("Legs:", blue, user.set.legs.name, end)
+    elif user.set.legs.quality == "Epic":
+        print("Legs:", purple, user.set.legs.name, end)
+    else:
+        print("Legs:", user.set.legs.name, end)
+
+    if user.set.feet.quality == "Junk":
+        print("Feet:", junk, user.set.feet.name, end)
+    elif user.set.feet.quality == "Uncommon":
+        print("Feet:", green, user.set.feet.name, end)
+    elif user.set.feet.quality == "Rare":
+        print("Feet:", blue, user.set.feet.name, end)
+    elif user.set.feet.quality == "Epic":
+        print("Feet:", purple, user.set.feet.name, end)
+    else:
+        print("Feet:", user.set.feet.name, end)
+
+    if user.set.weapon.quality == "Junk":
+        print("Weapon:", junk, user.set.weapon.name, end)
+    elif user.set.weapon.quality == "Uncommon":
+        print("Weapon:", green, user.set.weapon.name, end)
+    elif user.set.weapon.quality == "Rare":
+        print("Weapon:", blue, user.set.weapon.name, end)
+    elif user.set.weapon.quality == "Epic":
+        print("Weapon:", purple, user.set.weapon.name, end)
+    else:
+        print("Weapon:", user.set.weapon.name, end)
+
+    if user.set.offhand.quality == "Junk":
+        print("Offhand:", junk, user.set.offhand.name, end)
+    elif user.set.offhand.quality == "Uncommon":
+        print("Offhand:", green, user.set.offhand.name, end)
+    elif user.set.offhand.quality == "Rare":
+        print("Offhand:", blue, user.set.offhand.name, end)
+    elif user.set.offhand.quality == "Epic":
+        print("Offhand:", purple, user.set.offhand.name, end)
+    else:
+        print("Offhand:", user.set.offhand.name, end)
+    print("")
 
 
 def check_item(string, user_inventory, user, victim):
@@ -880,11 +979,26 @@ def check_weapon(string, user_inventory, user):
 def list_inventory(bag):
     print("Your items:")
     for i in range(len(bag)):
+        if bag[i].quality == "Junk":
+            qualityModifier = "\033[1;30;40m"
+            qualityModifier2 = "\033[0m"
+        elif bag[i].quality == "Uncommon":
+            qualityModifier = "\033[1;32;40m"
+            qualityModifier2 = "\033[0m"
+        elif bag[i].quality == "Rare":
+            qualityModifier = "\033[1;36;40m"
+            qualityModifier2 = "\033[0m"
+        elif bag[i].quality == "Epic":
+            qualityModifier = "\033[0;35;40m"
+            qualityModifier2 = "\033[0m"
+        else:
+            qualityModifier = ""
+            qualityModifier2 = ""
         if bag[i].quantity > 0:
             if bag[i].quantity == 1:
-                print("(" + str(bag[i].quantity) + ") " + bag[i].name + " - " + bag[i].category + ": " + bag[i].description)
+                print("(" + str(bag[i].quantity) + ") " + qualityModifier + bag[i].name + qualityModifier2 + " - " + bag[i].category + ": " + bag[i].description)
             else:
-                print("(" + str(bag[i].quantity) + ") " + bag[i].plural + " - " + bag[i].category + ": " + bag[i].description)
+                print("(" + str(bag[i].quantity) + ") " + qualityModifier + bag[i].plural + qualityModifier2 + " - " + bag[i].category + ": " + bag[i].description)
     print("")
 
 
@@ -899,7 +1013,7 @@ def list_inventory(bag):
 
 
 class Quest:
-    def __init__(self, title, action, object, counter, countertracker, reward, reward2, rewardItem, desc, desc_ongoing, completed, followup):
+    def __init__(self, title, action, object, counter, countertracker, reward, reward2, rewardItem, desc, desc_ongoing, completed, followup, finished):
         self.title = title
         self.action = action
         self.counter = counter
@@ -912,6 +1026,7 @@ class Quest:
         self.desc_ongoing = desc_ongoing
         self.completed = completed
         self.followup = followup
+        self.finished = finished
 
 
 def discuss_quest(pc, giver):
@@ -934,7 +1049,8 @@ def discuss_quest(pc, giver):
                 pc.questlog.remove(giver.quest)
                 if giver.quest.rewardItem is not None:
                     pc.inventory[pc.inventory.index(giver.quest.rewardItem)].quantity += 1
-                    print("You got " + giver.quest.rewardItem)
+                    print("You got " + giver.quest.rewardItem.name)
+                giver.quest.finished = 1
                 giver.quest = giver.quest.followup
                 return
             else:
@@ -945,19 +1061,24 @@ def discuss_quest(pc, giver):
             pass # Add new quest types here.
     #   If not, read out the dialogue behind a quest
     else:
-        print(giver.name + ' says: "' + giver.quest.desc + '"')
-    #   Allow a player to pick yes or no:
-        d = input("\nDo you accept this quest? Y/N: ")
-        if d.lower() in ["yes", "y", "accept", "of course", "absolutely"]:
-            print("You accepted the quest: " + giver.quest.title)
-            pc.questlog.append(giver.quest)
-            return
-        elif d.lower() in ["n", "no", "decline"]:
-            print("You declined the quest.")
-            return
+        if questList[questList.index(giver.quest)].finished == 1:
+            giver.quest = giver.quest.followup
+            if giver.quest:
+                discuss_quest(pc, giver)
         else:
-            print("I'll take that as a no.")
-            return
+            print(giver.name + ' says: "' + giver.quest.desc + '"')
+            #   Allow a player to pick yes or no:
+            d = input("\nDo you accept this quest? Y/N: ")
+            if d.lower() in ["yes", "y", "accept", "of course", "absolutely"]:
+                print("You accepted the quest: " + giver.quest.title)
+                pc.questlog.append(giver.quest)
+                return
+            elif d.lower() in ["n", "no", "decline"]:
+                print("You declined the quest.")
+                return
+            else:
+                print("I'll take that as a no.")
+                return
 
 
 def list_quests(pc):
@@ -1046,6 +1167,15 @@ def teach(pc, NPC):
             print(NPC.name + " offers to teach you Stealth. Y/N? ")
             if input(">").lower() == "y":
                 pc.spells.append(Stealth)
+    if pc.job.lower() in ["shaman", "druid"]:
+        if pc.level >= 3 and AJcreek not in pc.spells:
+            print(NPC.name + " offers to teach you Astral Journey of Wind")
+        if pc.level >= 5 and AJdesrah not in pc.spells:
+            print(NPC.name + " offers to teach you Astral Journey of Earth")
+        if pc.level >= 7 and AJdraenin not in pc.spells:
+            print(NPC.name + " offers to teach you Astral Journey of Fire")
+        if pc.level >= 9 and AJthalj not in pc.spells:
+            print(NPC.name + " offers to teach you Astral Journey of Ice")
 
 
 def attempt_learning(pc, NPC):
@@ -1054,6 +1184,8 @@ def attempt_learning(pc, NPC):
     elif pc.job.lower() == "paladin" and NPC.type in ["priest", "paladin"]:
         teach(pc, NPC)
     elif pc.job.lower() in ["knight", "barbarian"] and NPC.type == "warrior":
+        teach(pc, NPC)
+    elif pc.job.lower() in ["druid", "shaman"] and NPC.type in ["druid", "shaman"]:
         teach(pc, NPC)
     else:
         print(NPC.name + " doesn't train your class.")
@@ -1198,6 +1330,7 @@ tailor_dialogue = ["Browse my wares!", "Sown with love!", "Don't go out naked!"]
 smith_dialogue = ["As strong as the mountain.", "Keep it sharp!", "It's hammer time."]
 innkeeper_dialogue = ["Stay a while.", "What are you drinking?", "One for the road?"]
 aurilius_dialogue = ["Did you read my work?", "Are you new here?", "Appearances are deceiving."]
+ekrub_dialogue = ["Crudux Cruo...", "Beware the living...", "Maranax Infirmux..."]
 
 
 dwarfguard_dialogue = ["Aye.", "Watch yer back.", "No loiterin'."]
@@ -1230,11 +1363,14 @@ elflib_dialogue = ["Peace in knowledge.", "I have seen many millenia.", "Welcome
 soarer_dialogue = ["To the skies!", "I long for the skies!", "Skawk! Just kidding!"]
 caretaker_dialogue = ["Mmhm?", "Yes?", "May I assist you?"]
 hierophant_dialogue = ["Obey the wilds.", "Do not disturb our trance.", "Welcome to Tel'layl."]
+reena_dialogue = ["Yes, friend?", "You like my daggers?", "Walk in the shadows."]
 nayla_dialogue = ["Preservation is our duty.", "Abide to nature.", "Do not loiter."]
 embas_dialogue = ["Yeah, sweet cheeks?", "What'cha lookin' at?", "Look, I'm a busy girl."]
 sleeper_dialogue = ["Snzz..", "Zzz..", "Mmmzmzz..."]
 
 
+grimrog_dialogue = ["Grimrog LIKE da carnage!!", "What you want!?!?", "Me busy. Go away."]
+kogol_dialogue = ["What you need?\" \"What you want?", "We busy.\" \"Go away.", "We teach strong magicks.\" \"Very strong."]
 ogreg_dialogue = ["You beware!", "Me guard!", "Me stand ready!"]
 seerred_dialogue = ["What you want?", "No disturb us!", "Me busy. Go away."]
 seerblue_dialogue = ["Hello, friend!", "You need?", "Ogor-mog!"]
@@ -1244,7 +1380,7 @@ takk_dialogue = ["Me fish!", "Me like fishies!", "Me pull fishie out, then me TH
 smog_dialogue = ["You need?", "You drink?", "Little one drink?"]
 ogre_dialogue = ["Red rock beautiful.", "Me fear dragons!", "Who you be?"]
 thog_dialogue = ["thog dont caare", "thog dont caare", "thog dont caare"]
-embasdrak_dialogue = ["RAAAHHHH!", "BE QUICK!", "FUCK OFF."]
+embasdrak_dialogue = ["RAAAHHHH!", "BE QUICK!", "AWAY WITH YOU."]
 earthbleed_dialogue = ["WE'RE BUSY.", "YOU SHOULDN'T BE HERE.", "GO AWAY!"]
 
 
@@ -1272,16 +1408,18 @@ ashslave_dialogue = ["Urghh...", "It's tiring here...", "Beats being at the ash 
 nomad_dialogue = ["Yes?", "The Dragons have a very short temper!", "Watch yourself around here!"]
 provis_dialogue = ["I HAVE GOODS", "I SELL", "SHOW ME YOUR COIN"]
 salbart_dialogue = ["You drink?", "What do you want?", "Mmmhm?"]
+korla_dialogue = ["Walk in the shadows.", "Mind your boundaries.", "You don't want to be trouble with us."]
 konikki_dialogue = ["I have seen eons...", "Strife fuels the Dragons...", "Watch your step in these halls..."]
 mindlash_dialogue = ["I SPEAK FOR THE SPIRITS", "THE VOICES TELL ME TO KILL", "BLOOD FEEDS THE FLAME"]
+pyro_dialogue = ["MY BLOOD BOILS", "DO YOU WANT TO SEE A MAGIC TRICK?", "THE WORLD SHALL BURN"]
 elderwyrm_dialogue = ["Krazakh shanil ukhan..", "Khiran karakh..", "Uronn nokhaliz"]
 whelp_dialogue = ["Rrr!!", "Arry!!", "Skhrr!"]
 drakcom_dialogue = ["HAHA YES", "HELLO", "<sniffs>"]
 draklegion_dialogue = ["RRARGHHH", "WE ARE WARRIORS", "WE ARE LEGION"]
 draktrainee_dialogue = ["I WORK", "FOR THE DRAGON GOD!", "WE ARE A TIDE OF DEATH"]
 tracker_dialogue = ["I LIE IN WAIT", "PATIENCE!", "THE DUSKRAIL COMES."]
-slashtail_dialogue = ["GO AWAY", "FUCK OFF", "BEGONE, THE GOD DOES NOT TAKE VISITORS"]
-gnasher_dialogue = ["BLEARUGHGHH!", "LAVISH BRUTALITY!", "MY JAWS LONGS FOR BLOOD"]
+slashtail_dialogue = ["GO AWAY", "DO YOU WANT TO BE HUNG?", "BEGONE, THE GOD DOES NOT TAKE VISITORS"]
+gnasher_dialogue = ["BLEARUGHGHH!", "LAVISH BRUTALITY!", "MY JAWS LONG FOR BLOOD"]
 wrathguard_dialogue = ["BOW DOWN!", "YOU ARE IN THE PRESENCE OF A GOD!", "HOLD YOUR HIDE"]
 odym_dialogue = ["<guttural growls>", "<rumbles>", "<frowns>"]
 firestorm_dialogue = ["Do you wish to [travel], young one?", "Is [travel] on your mind?", "Where would you like to [fly]?"]
@@ -1308,6 +1446,7 @@ Tailor = NPC("Tailor Ann", "vendor", "Her face shines with ephemeral beauty as s
 Blacksmith = NPC("Smith Jeffrey", "vendor", "His face is soiled from working in the mines.", smith_dialogue, "Human",[ ],[])
 Innkeeper = NPC("Innkeeper Alistair", "vendor", "Alistair shines his mugs as he leans to you.", innkeeper_dialogue, "Human", [],[])
 EnchanterAurilius = NPC("Enchanter Aurilius", "idle", "Sitting alone, cloaked in an ominous hood.", aurilius_dialogue, "Human", [], [])
+NecromancerEkrub = NPC("Necromancer Ekrub", "necromancer", "Chanting, whipering, rocking back and forth...", ekrub_dialogue, "Human", [], [])
 
 
 #       Dwarves
@@ -1321,7 +1460,7 @@ WeaverNolag = NPC("Weaver Nolag", "vendor", "Stands in front of a huge stock of 
 SpeakerUtham = NPC("Speaker Utham", "shaman", "Many idols and fetishes hang from his traditional robe.", utham_dialogue, "Dwarf", [], [])
 HighPriestSakhr = NPC("High Priest Sakhr", "priest", "An ivory white beard descends from his wrinkled, pensive old face.", sakhr_dialogue, "Dwarf", [], [])
 SmithHajjar = NPC("Grandsmith Hajjar", "vendor", "The black-haired dwarf has a crazed look on his face.", hajjar_dialogue, "Dwarf", [], [])
-EarthMoverOrrin = NPC("Earthmover Orrin", "idle", "Draped in red robes, with a circlet of rubies upon his head.", orrin_dialogue, "Dwarf", [], [])
+EarthMoverOrrin = NPC("Earthmover Orrin", "wizard", "Draped in red robes, with a circlet of rubies upon his head.", orrin_dialogue, "Dwarf", [], [])
 AnvilMasterUrnn = NPC("Anvilmaster Urnn", "idle", "In extremely meditative trance as he hammers the anvil.", urnn_dialogue, "Dwarf", [], [])
 SteamGolem = NPC("The Great Steam Golem", "idle", "The construct huffs steam and rattles rhythmically.", steamgolem_dialogue, "Dwarf", [], [])
 TinkerStrikk = NPC("Tinker Strig", "idle", "Too busy working on his latest creation. Sparks fly away.", strikk_dialogue, "Dwarf", [], [])
@@ -1343,7 +1482,8 @@ Wisp2 = NPC("Wisp", "idle", "A shimmering ball of blue glow. You catch the glimp
 ElvenHomekeeper = NPC("an Elven homekeeper", "vendor", "Draped in trimmed, traditional elven robes.", elftrader_dialogue, "Moon Elf", [], [])
 ElvenLibrarian = NPC("an Elven librarian", "vendor", "A long beard descends from his face, as he's considerably elder.", elflib_dialogue, "Moon Elf", [], [])
 SoarerSaaryel = NPC("Soarer Saaryel", "druid", "A feathery plumage covers the back of her arms.", soarer_dialogue, "Moon Elf", [], [])
-CaretakerUyella = NPC("Caretaker Uyella", "ranger", "Carefully leaning over to tend to her druid sisters.", caretaker_dialogue, "Stagkin", [], [])
+CaretakerUyella = NPC("Caretaker Uyella", "warrior", "Carefully leaning over to tend to her druid sisters.", caretaker_dialogue, "Stagkin", [], [])
+ShadowdancerReena = NPC("Shadowdancer Reena", "rogue", "Dressed in a beautiful robe of aether, wielding glowing daggers.", reena_dialogue, "Moon Elf", [], [])
 HierophantAyella = NPC("Hierophant Ayella", "druid", "Draped in jade green robes, focused in her meditation.", hierophant_dialogue, "Moon Elf", [], [])
 PriestessNayla = NPC("Priestess Nayla", "priest", "Draped in ivory robes, tending to the hierophant.", nayla_dialogue, "Moon Elf", [], [])
 LunarianEmbassador = NPC("a Lunarian Embassador", "idle", "In a business suit and a lavender skirt, her bunny ears twitch in tandem.", embas_dialogue, "Lunarian", [], [])
@@ -1352,6 +1492,8 @@ CaretakerSynnia = NPC("Caretaker Synnia", "idle", "Often shifts the pillows arou
 
 
 #       Ogre
+ChampionGrimrog = NPC("Champion Grimrog", "warrior", "Clad in spiked armor and wielding a colossal put-together axe.", grimrog_dialogue, "Ogre", [], [])
+TwoHeadedKogol = NPC("Kogol the Two-Headed", "wizard", "Covered in arcane tattoos and woad, both heads operate separately.", kogol_dialogue, "Ogre", [], [])
 GuardSlipkik = NPC("Guard Slipkik", "guard", "Wraps what seems to be a huge frying pan around his belly.", ogreg_dialogue, "Ogre", [], [])
 GuardRokok = NPC("Guard Rokok", "guard", "Wearing what seems to be a huge cooking pot on his head.", ogreg_dialogue, "Ogre", [], [])
 SeerOrog = NPC("Seer Orog", "shaman", "His face and belly are painted red.", seerred_dialogue, "Ogre", [], [])
@@ -1363,11 +1505,11 @@ BartenderSmog = NPC("Bartender Smog", "vendor", "He's wiping a stone mug that's 
 OgreCommoner = NPC("an Ogre commoner", "idle", "Huge, round, light beige in skin with a jutting jaw.", ogre_dialogue, "Ogre", [], [])
 thog = NPC("thog", "idle", "he don't caare", thog_dialogue, "Ogre", [], [])
 TynninEmbassador = NPC("Tynnin Embassador", "idle", "Thrashes and looks around frantically.", embasdrak_dialogue, "Dragon", [], [])
-EarthbleederRokhmaran = NPC("Earthbleeder Rokhmaran", "idle", "Whips his tail in frenzy as the runes on his scales glow.", earthbleed_dialogue, "Dragon", [], [])
+EarthbleederRokhmaran = NPC("Earthbleeder Rokhmaran", "shaman", "Whips his tail in frenzy as the runes on his scales glow.", earthbleed_dialogue, "Dragon", [], [])
 
 
 #       Sun Elf
-SunguardMaeniStrin = NPC("Sunguard Maeni Strin", "guard", "Her long, flowing white hair is contrasted by her red armor.", maenistrin_dialogue, "Sun Elf", [], [])
+SunguardMaeniStrin = NPC("Sunguard Maeni Strin", "warrior", "Her long, flowing white hair is contrasted by her red armor.", maenistrin_dialogue, "Sun Elf", [], [])
 SunGuard = NPC("a Sunguard", "guard", "Their ivory skin contrasts their gold-trimmed, blood red armor.", sunguard_dialogue, "Sun Elf", [], [])
 ElvenMagus = NPC("a Sun Magus", "idle", "Their long, flowing red robes and condescending stare intimidate you.", elfmage_dialogue, "Sun Elf", [], [])
 HighMagusTelenSorian = NPC("High Magus Telen Sorian", "wizard", "He's extremely tall and lanky, his face somewhat vampiric.", highmagus_dialogue, "Sun Elf", [], [])
@@ -1377,7 +1519,7 @@ DawnwatcherNorianelAran = NPC("Dawnwatcher Norianel Aran", "priest", "His golden
 ElvenSmith = NPC("an Elven smith", "vendor", "Composed as the pile of wares behind him wobbles.", selfvendor_dialogue, "Sun Elf", [], [])
 ElvenBartender = NPC("an Elven bartender", "vendor", "His goods are of the highest quality.", selfbar_dialogue, "Sun Elf", [], [])
 SElvenCommoner = NPC("an Elven commoner", "idle", "Holds a resting smug face.", self_dialogue, "Sun Elf", [], [])
-FiretamerNinilAuronan = NPC("Firetamer Ninil Auronan", "ranger", "Busy watching the fire hawks and phoenixes.", firetamer_dialogue, "Sun Elf", [], [])
+FiretamerNinilAuronan = NPC("Firetamer Ninil Auronan", "rogue", "Busy watching the fire hawks and phoenixes.", firetamer_dialogue, "Sun Elf", [], [])
 PhoenixBird = NPC("a Phoenix bird", "idle", "Sparkles in eternal flames as it circles the skies.", phoenix_dialogue, "Sun Elf", [], [])
 PhoenixBaby = NPC("a Phoenix hatchling", "idle", "Tiny, but fearsome!", bbphoenix_dialogue, "Sun Elf", [], [])
 SElvenLibrarian = NPC("an Elven Librarian", "vendor", "Wise beyond her years.", selflib_dialogue, "Sun Elf", [], [])
@@ -1393,8 +1535,10 @@ CenturionGrimeye = NPC("Centurion Grimeye", "warrior", "His eyes sparkle with fl
 ReptileGuard = NPC("a Reptile guard", "guard", "Clenched teeth, angry glare, restless thousand meter stare.", draguard_dialogue, "Dragon", [], [])
 DrakonidProvisioner = NPC("a Drakonid provisioner", "vendor", "Cares for the massive pile of hoarded goods behind him.", provis_dialogue, "Dragon", [], [])
 Salbartender = NPC("a Salamander bartender", "vendor", "Salamanders are quick, agile, witty, and their memory is impressive.", salbart_dialogue, "Dragon", [], [])
+BlackclawKorla = NPC("Korla Blackclaw", "rogue", "A female half-dragon, from Dunia's most feared rogue organization.", korla_dialogue, "Dragon", [], [])
 SeerKonikki = NPC("Seer Konikki", "priest", "A heavy shell on his back, a humped neck and a calm, elder face.", konikki_dialogue, "Dragon", [], [])
 EarthbleederMindlash = NPC("Earthbleeder Mindlash", "shaman", "Swipes his tail frantically as he applies more woad to his face.", mindlash_dialogue, "Dragon", [], [])
+FlamebenderPyrocruor = NPC("Flamebender Pyrocruor", "wizard", "Constantly snapping fires with his fingers. He looks quite deranged.", pyro_dialogue, "Dragon", [], [])
 AncientWyrm = NPC("an Ancient Wyrm", "idle", "One of the noble, massive winged dragons, calmly attending some sort of ritual.", elderwyrm_dialogue, "Dragon", [], [])
 DragonWhelp = NPC("a Dragon whelp", "idle", "Flies and roars around with tiny joy.", whelp_dialogue, "Dragon", [], [])
 DrakonidCommoner = NPC("a Drakonid commoner", "idle", "Most Drakonid are furiously bloodthirsty and long for war. Some aren't.", drakcom_dialogue, "Dragon", [], [])
@@ -1809,7 +1953,6 @@ def start(pc, enemy):
                 LevelUp(pc)
             if pc.location.bossroom == True:
                 pc.location.enemy_table.remove(enemy)
-                for i in range(len(pc.location.enemy_table)): print("DEBUG " + pc.location.enemy_table[i].name)
             pc.in_combat = 0
             break
         check_ending_statuses(pc)
@@ -2107,6 +2250,11 @@ barrack = Zone("the Academy of War", [hylonian_kingdom], [], [HumanGuard, Knight
 tradedistrict = Zone("the trade district", [hylonian_kingdom], [], [Tailor, Blacksmith, Innkeeper],
                      "The streets boil with the noise of people bartering and gossiping. Countless shops are open, and numerous vendors are barking in the streets "
                      "for their wares and prices.", None, False, [])
+hylonian_sewers = Zone("underground sewers", [tradedistrict], [], [NecromancerEkrub],
+                       "You slip through the inconspicuous tunnel, wading through the labyrinthian catacombs for what seems like several minutes. Eventually, "
+                       "you arrive into a dead end, where lays an emaciated man draped in silver-trimmed black robes. He's surrounded by torches and piles of "
+                       "bones, and stares at a jagged symbol drawn on the wall with blood.", None, False, [])
+tradedistrict.linked_zones = [hylonian_sewers, hylonian_kingdom]
 
 
 #   Iklisztefon
@@ -2164,7 +2312,7 @@ altar_of_the_moon = Zone("the Altar of the Moon", [the_grove], [], [HierophantAy
                          "Three enormous pillars extend into the sky, curved into the center of the circle like crescent moons. An eclipse is depicted upon the circular "
                          "marble tiled floor, with runic engravings all over the walls and around the rim. The sky is unobstructed as the canopy of the forest gives way "
                          "to an unfettered view of the sky.", None, False, [])
-saotaer_barrows = Zone("the Saotaer barrows", [the_grove], [], [SleeperLayalin, CaretakerSynnia],
+saotaer_barrows = Zone("the Saotaer barrows", [the_grove], [], [SleeperLayalin, CaretakerSynnia, ShadowdancerReena],
                        "You descend into the barrow caverns beneath the grove of the tree of life. [Placeholder]", None, False, [])
 the_grove.linked_zones = [tellayl, tree_base, altar_of_the_moon, saotaer_barrows]
 tree_base.linked_zones = [the_grove, tree_branch]
@@ -2175,10 +2323,10 @@ tree_top.linked_zones = [tree_branch]
 #   Redrock
 
 
-da_mudslide = Zone("Da Mudslide", [], [], [GuardSlipkik, GuardRokok],
+da_mudslide = Zone("Da Mudslide", [], [], [GuardSlipkik, GuardRokok, ChampionGrimrog],
                    "You slide down a broad crack in the walls of the barrow, opening into an open ceiling canyon. Mud and stone homes are built and litter the yards, and "
                    "shoddy bridges hang around the heights of the canyon. Many paths lead around to inner cul-de-sacs", None, False, [])
-da_campfaya = Zone("Da Campfaya", [da_mudslide], [], [SeerOrog, SeerFlimig, SeerToktok, AssistantMoragg],
+da_campfaya = Zone("Da Campfaya", [da_mudslide], [], [SeerOrog, SeerFlimig, SeerToktok, AssistantMoragg, TwoHeadedKogol],
                    "A humongous pile of tree logs are ablaze in the center of the cul-de-sac. Many ogres stand in a circle around it, their faces painted in woad and runes "
                    "as they shake idols and pieces of odd voodoo jewelry, adorned with shrunken skulls, as they hum in low tones.", None, False, [])
 da_riva = Zone("Da Riva", [da_mudslide], [], [FishermanTakk],
@@ -2228,7 +2376,7 @@ third_gate = Zone("Draenin Third Gate", [], [], [CenturionGrimeye, ReptileGuard,
 stormperch = Zone("the Storm Perch", [], [], [ElderFirestorm],
                   "You climb to the top of the stone tower, and after a few moments, you find yourself near an enormous elder dragon perched on top. His wings rest by his "
                   "side, but you have no doubt their span would be incredible. He gazes into the horizon.", None, False, [])
-cove_of_flame = Zone("the Cove of Flame", [], [], [EarthbleederMindlash, SeerKonikki, AncientWyrm],
+cove_of_flame = Zone("the Cove of Flame", [], [], [EarthbleederMindlash, SeerKonikki, AncientWyrm, FlamebenderPyrocruor],
                      "The dank, dark pits of fog and purple smog sinks deeper into a catacomb built into a cave system. Stalagmites and stalactites act as pillars "
                      "keeping the cave hollow as flames of shamanistic campfires raise smoke high up.", None, False, [])
 the_brood_pit = Zone("the Brood Pit", [], [], [DragonWhelp, DrakonidCommoner],
@@ -2240,7 +2388,7 @@ wargrounds = Zone("Draenin Wargrounds", [], [], [DragonLegionnaire, ReptileTrain
 duskrail_station = Zone("Duskrail Station", [], [], [TrackwatcherStoneclaw],
                         "The Duskrail station is busy, boiling with workers who stands vigil for the arrival of the train. Cranes are poised ready to lift "
                         "the goods that arrive and to load the carts that are about to leave.", None, False, [])
-the_gauntlet = Zone("the Gauntlet", [], [], [WarmasterSlashtail, OverlordGnasher],
+the_gauntlet = Zone("the Gauntlet", [], [], [WarmasterSlashtail, OverlordGnasher, BlackclawKorla],
                     "The towering figures guard the entrance to the fortress. Braziers all around you, torches hung in the walls and banners are a constant, aggressive "
                     "reminder of where you're about to step foot.", None, False, [])
 draenin_fort = Zone("the Citadel of Dread", [the_gauntlet], [], [EliteWrathguard, Odym],
@@ -2254,14 +2402,14 @@ third_gate.linked_zones = [wargrounds, the_brood_pit, cove_of_flame, duskrail_st
 stormperch.linked_zones = [third_gate]
 the_brood_pit.linked_zones = [wargrounds, third_gate]
 cove_of_flame.linked_zones = [third_gate]
-duskrail_station.linked_zones = third_gate
+duskrail_station.linked_zones = [third_gate]
 mortal_yard.linked_zones = [draenin, third_gate]
 
 
 #   Estate Thornhaart (dungeon, [])
 
 
-thorn_key = Inventory("a key to the basement", "keys to the basement", "Key", 0, "Spiky, chiseled with beautiful engravings.", 0, 100)
+thorn_key = Inventory("a key to the basement", "keys to the basement", "Key", 0, "Spiky, chiseled with beautiful engravings.", 0, 100, "Key")
 thornhaart_floor1 = Zone("the first floor", [], [], [], "The first floor is damp and muddy. Moss and spider webs creep through the cracks.", None, False, [])
 thornhaart_kitchen = Zone("the kitchen", [], [], [], "The kitchen of the estate is dirty beyond use, littered with expired garbage and rot.", None, True, [])
 thornhaart_hallway = Zone("the hallway", [], [], [], "The hallway gives off a creepy, haunted chill that lingers in your neck.", None, False, [])
@@ -2313,7 +2461,13 @@ dread_wastes.linked_zones = [draenin, hatchery]
 vulken.linked_zones = [draenin, ashlands]
 ashlands.linked_zones = [vulken]
 
-
+locationList = [the_grove, tree_base, tree_branch, tree_top, da_mudslide, veiled_commons, terrace_of_the_sun,
+                mortal_yard, duskrail_station, cove_of_flame, the_brood_pit, stormperch, third_gate, wargrounds, the_gauntlet,
+                thornhaart_floor1, thornhaart_kitchen, thornhaart_hallway, thornhaart_guestroom, thornhaart_floor2, thornhaart_chamber, thornhaart_basement, thornhaart_floor1,
+                plains_of_strife, reothian_glades, hylonian_outskirts, hylonian_kingdom, the_whitechapel, estate_thornhaart, the_blackwood, creek_of_life, crystal_river, tellayl,
+                iklistzefon, wetlands, goldstar, crystal_lake, canyon_of_woe, swamp_of_sorrow, wilting_steppes, windy_desert, redrock, desra, kronmar, emerald_jungle, sajrokka,
+                draenin, hatchery, dread_wastes, vulken, ashlands, saotaer_barrows, noblestreet, church, mageschool, barrack, tradedistrict,
+                dwarf_commons, ring_of_war, ring_of_soul, heart_of_the_mountain, steamhalls, hall_of_the_mountain_king, hylonian_sewers]
 
 
 
@@ -2428,6 +2582,7 @@ FistBump = Spell("Fist Bump", "Item Ability", 50, "bigstun", 0, " fired the stea
 SummonFireTotem = Spell("Place Fire Totem", "Item Ability", 0, "minion", 0, " planted a fire totem on the ground.", "Fire Nation Inc.")
 SummonWaterTotem = Spell("Place Water Totem", "Item Ability", 0, "minion", 0, " planted a water totem on the ground.", "Water Benders Inc.")
 SummonAirTotem = Spell("Place Air Totem", "Item Ability", 0, "minion", 0, " planted an air totem on the ground.", "Air Temple Inc... Or whatever remains of them.")
+RobeTap = Spell("Evocation II", "Item Ability", 50, "evocation", 50, "", "The very mesh of the robe saps your life energy to empower your spells.")
 
 # PHYSICAL MOVES
 WarriorShout = Spell("Guttural Shout", "Move", 0, "atkbuff", 0, " growled a strengthening battle cry at ", "YEEEET!")
@@ -2456,6 +2611,17 @@ cat.ability = [FlameLick]
 firetotem.ability = [FlameLick]
 watertotem.ability = [HealingRain]
 airtotem.ability = [Cleanse]
+
+spellList = [Lightning, HealingSpring, Tremor, Earthquake, Torpor, StrengthOfEarth, PropheticVisions, HealingRain, Root, AJcreek, AJdesrah, AJdraenin, AJthalj, Starfall,
+             Moonfire, Rejuvenation, GraspingRoots, TigerForm, BearForm, OwlForm, WindWall, Sirocco, CharmBeast, Thorns, SirenForm, TALENTWolf, TALENTTotem, TALENTTracking,
+             Minion, Conjure, SelfRacial, Phylonia, Pgoldstar, Pabandoned, Pdesert, PrismaticAnimation, TALENTFamiliar, TALENTMindControl, TALENTMesmerize, TALENTPolymorph,
+             FrostBolt, IceLance, Release, FlashFreeze, Blizzard, Icewall,
+             Fireball, Sunfire, FlameLick, CoronalBeam, LavaBolt, MoltenSlag,
+             Judgement, HolyLight, HolyShock, EyeForEye, LayOnHands, SoulOfCrusade, FinalStand, LightOfDawn, Smite, Silence, Exorcism, Cleanse, DCleanse, TALENTLayOnHands,
+             TALENTAvenging, TALENTRedemption, TALENTGuardian, TALENTShield,
+             Lifetap, Fear, SummonSkeleton, ShadowBolt, Shadowstep, FeignDeath, Transfusion, TALENTWraithGuard, TALENTShriek, TALENTPhylactery, TALENTOrb, TALENTCommand,
+             FistOfKarra, PoisonStrike, WhirlOfAekhal, PrayerOfMending, Charge, FistBump, SummonFireTotem, SummonWaterTotem, SummonAirTotem,
+             WarriorShout, WarriorCharge, Backstab, Stealth, TALENTCompanions, TALENTBloodfury, TALENTBarblur]
 
 
 
@@ -2586,9 +2752,9 @@ wizard_talents = [[ArcaneFamiliar, FireFrost, Mesmerize], [BoundlessWisdom, Weat
 #   Tier 1
 Balance = Talent("Balance", "Your Nature spells do more damage at night while your Fire spells do more damage during the day.", None)
 Camouflage = Talent("Camouflage", "Gain the ability to stealth around.", Stealth)
-Swiftmend = Talent("Swiftmend", "Gain the ability to cancel a HoT and do its full healing direcly.", None) #UNFINISHED -------------------------------------------
+Swiftmend = Talent("Swiftmend (BUGGED)", "Gain the ability to cancel a HoT and do its full healing direcly.", None) #UNFINISHED -------------------------------------------
 #   Tier 2
-Eclipse = Talent("Eclipse", "Gain the ability to control the cycle of Night and Day.", "druideclipse") #UNFINISHED -----------------------------------------------
+Eclipse = Talent("Eclipse (BUGGED)", "Gain the ability to control the cycle of Night and Day.", "druideclipse") #UNFINISHED -----------------------------------------------
 JaggedWounds = Talent("Jagged Wounds", "All of your attacks leave a faint bleed effect.", None)
 Chloroplast = Talent("Chloroplast", "Increase your and your companion's health regeneration by 50%.", None)
 #   Tier 3
@@ -2640,7 +2806,7 @@ ShadowClone = Talent("Shadow Clone Jutsu", "You may summon a harmless clone of y
 monk_talents = [[CrouchingTiger, SpinningCrane, MightofOx], [DeepWoundsMONK, Blur, Stomping], [ProwlingHunter, ManyStrikes, ShadowClone]]
 #       RANGER TALENTS (Archer - Beastlord - Scout)
 #   Tier 1
-Fletching = Talent("Fletching", "You gain the ability to fletch arrows and use bows.", None) # UNFINISHED ------------------------------------------
+Fletching = Talent("Fletching (BUGGED)", "You gain the ability to fletch arrows and use bows.", None) # UNFINISHED ------------------------------------------
 Company = Talent("Company", "You may charm any beast to accompany you.", CharmBeast)
 Swiftness = Talent("Swiftness", "Your speed stat increases by 1 point.", None)
 #   Tier 2
@@ -2652,6 +2818,19 @@ HailOfArrows = Talent("Hail of Arrows", "Your ranged attacks may strike more tha
 KingOfBeasts = Talent("King of Beasts", "You may also charm Dragons along with Beasts.", None)
 Druidism = Talent("Druidism", "You may cast Nature, Frost and Fire spells.", None)
 ranger_talents = [[Fletching, Company, Swiftness], [KeenEye, NaturalBond, Tracking], [HailOfArrows, KingOfBeasts, Druidism]]
+
+talentList = [ArmorProficiency, WeaponProficiency, MagicalProficiency, Stoicism, DeadlyCalm, Wraithguard, AdamantineWill, IronLegion, ShadowKnight, # Knight
+              SwiftFootwork, BladeProficiency, BloodFury, SecondWind, DeepWounds, Precision, BattleEndurance, MasteryOfArms, Afterimage,            # Barbarian
+              Retribution, Holiness, Protection, Reckoning, BidexterousHealing, ShieldOfVengeance, AvengingWrath, Redemption, GuardianOfKings,      # Paladin
+              RollingThunder, TotemWielder, LifeSpring, SpiritWolf, RuneCarving, AncestralHealing, Rebirth, SpiritualVigor, AncestralVision,        # Shaman
+              Mercy, HolyShock, CalamitousIntent, Renewal, PowerWordShield, DireShriek, Compassion, Atonement, Contempt,                            # Priest
+              BloodTap, DirePlague, IceFloes, CarcassShaper, Phylactery, HowlingWinds, CrimsonOrb, CommandUndead, RemorselessWinter,                # Necromancer
+              ArcaneFamiliar, FireFrost, Mesmerize, BoundlessWisdom, WeatherMastery, Polymorph, RealityUnwoven, Adaptability, ShackleWill,          # Wizard
+              Balance, Camouflage, Swiftmend, Eclipse, JaggedWounds, Chloroplast, WrathOfKamarr, ExaltedStag, SkinLikeNature,                       # Druid
+              PercussiveAura, GraceOfAir, Dissonance, ThrummingPulse, CharmingMelody, Alacrity, DrumsOfWar, ExtendedBreath, Concerto,               # Bard
+              Mobility, Malice, Remorseless, ForcefulDeflection, ShadowDancing, Murder, SweepingStrikes, Nightfall, Butchering,                     # Assassin
+              CrouchingTiger, SpinningCrane, MightofOx, DeepWoundsMONK, Blur, Stomping, ProwlingHunter, ManyStrikes, ShadowClone,                   # Monk
+              Fletching, Company, Swiftness, KeenEye, NaturalBond, Tracking, HailOfArrows, KingOfBeasts, Druidism]                                  # Ranger
 
 
 def LearnTalent(pc):
@@ -2706,188 +2885,248 @@ def ListTalents(pc):
 
 
 # Useless mob junk
-Gold = Inventory("a Gold Piece", "Gold Pieces", "Currency", 1, "Useless were it not for international convention.", 100, 1)
-GoblinSkin = Inventory("a patch of goblin skin", "patches of goblin skin", "Junk", 0, "Soft and wrinkly, like raw chicken skin.", 0, 20)
-TornImpWing = Inventory("a torn imp wing", "torn imp wings", "Junk", 0, "According to all known laws of aviations, an imp shouldn't be able to fly.", 0, 15)
-GnollFang = Inventory("a gnoll fang", "gnoll fangs", "Junk", 0, "Not really that sharp.", 0, 20)
-CritterFur = Inventory("a patch of critter fur", "patches of critter furs", "Junk", 0, "Soft and stained with blood.", 0, 10)
-PatchOfCloth = Inventory("a patch of cloth", "patches of cloth", "Junk", 0, "Remove it, show bob.", 0, 20)
-BoneChips = Inventory("a bone chip", "bone chips", "Junk", 0, "Shattered.", 0, 10)
-ScarabCarapace = Inventory("a scarab carapace", "scarab carapaces", "Junk", 0, "Somewhat cracked and frail.", 0, 10)
-SnakeFang = Inventory("a snake fang", "snake fangs", "Junk", 0, "Pretty sharp.", 0, 10)
-Slimeball = Inventory("a ball of slime", "balls of slime", "Junk", 0, "Rubbery texture.", 0, 10)
-Scale = Inventory("a reptilian scale", "reptilian scales", "Junk", 0, "They regenerate when pulled off.", 0, 20)
-CrocodileFang = Inventory("a crocodile fang", "crocodile fangs", "Junk", 0, "Chipped beyond use.", 0, 10)
-Horn = Inventory("a keratin horn", "keratin horns", "Junk", 0, "It's pretty heavy.", 0, 20)
-Tusk = Inventory("a broken tusk", "broken tusks", "Junk", 0, "Not as expensive as you think.", 0, 50)
-IntactTusk = Inventory("an intact tusk", "intact tusks", "Junk", 0, "Pristine ivory for filthy poachers like you.", 0, 125)
-BrokenHoof = Inventory("a broken hoof", "broken hooves", "Junk", 0, "Bleeding bloodhoof.", 0, 20)
-OgreEye = Inventory("an ogre eye", "ogre eyes", "Junk", 0, "Gross.", 0, 20)
-Beak = Inventory("a torn beak", "torn beaks", "Junk", 0, "The tip is deceptively sharp.", 0, 10)
-Feather = Inventory("a feather", "feathers", "Junk", 0, "Birds of it flock together.", 0, 10)
-FuzzyLeg = Inventory("a fuzzy leg", "fuzzy legs", "Junk", 0, "Yucky.", 0, 10)
-Spinneret = Inventory("a spinneret", "spinnerets", "Junk", 0, "Spits out silk.", 0, 20)
-Fang = Inventory("a chipped fang", "chipped fangs", "Junk", 0, "Cracked.", 0, 10)
-RippedTendon = Inventory("a tendon", "tendons", "Junk", 0, "Contracts and expands to allow movement.", 0, 20)
-Skull = Inventory("a skull", "skulls", "Junk", 0, "Somebody's skull.", 0, 10)
-GiantFang = Inventory("a giant fang", "giant fangs", "Junk", 0, "How does it fit in your bag?", 0, 30)
-TwitchingLeg = Inventory("a huge twitching leg", "huge twitching legs", "Junk", 0, "Ew.", 0, 30)
-TigerFur = Inventory("tiger fur", "tiger furs", "Junk", 0, "Typical bed covers for ethnic households.", 0, 200)
-Thorn = Inventory("thorn", "thorns", "Junk", 0, "Ouch!", 0, 10)
-CursedSeed = Inventory("a cursed seed", "cursed seeds", "Junk", 0, "Throw them into the dirt and sprout a giant stalk.", 0, 20)
-DreadPetal = Inventory("a dread petal", "dread petals", "Junk", 0, "Probably useful for something.", 0, 30)
-Rock = Inventory("a rock", "rocks", "Junk", 0, "Holds a lot of sentimental value.", 0, 5)
-brimstone = Inventory("a piece of brimstone", "pieces of brimstone", "Junk", 0, "Still hot.", 0, 30)
-obsidiancore = Inventory("an obsidian core", "obsidian cores", "Junk", 0, "The heart of a flame elemental.", 0, 50)
-ruby = Inventory("a rough ruby", "rough rubies", "Junk", 0, "The sunken eyes of a flame elemental.", 0, 100)
-fireessence = Inventory("a fire essence", "fire essences", "Junk", 0, "The soul of a flame elemental.", 0, 100)
-enchanting_rune = Inventory("a phantasmal rune", "phantasmal runes", "Junk", 0, "The etched stone glimmers a rainbow spectrum of colors.", 0, 100)
-phylactery = Inventory("a phylactery", "phylacteries", "Junk", 0, "A crystalline urn, etched with symbols of undeath.", 0, 0)
+Gold = Inventory("a Gold Piece", "Gold Pieces", "Currency", 1, "Useless were it not for international convention.", 100, 1, "Normal")
+GoblinSkin = Inventory("a patch of goblin skin", "patches of goblin skin", "Junk", 0, "Soft and wrinkly, like raw chicken skin.", 0, 20, "Junk")
+TornImpWing = Inventory("a torn imp wing", "torn imp wings", "Junk", 0, "According to all known laws of aviations, an imp shouldn't be able to fly.", 0, 15, "Junk")
+GnollFang = Inventory("a gnoll fang", "gnoll fangs", "Junk", 0, "Not really that sharp.", 0, 20, "Junk")
+CritterFur = Inventory("a patch of critter fur", "patches of critter furs", "Junk", 0, "Soft and stained with blood.", 0, 10, "Junk")
+PatchOfCloth = Inventory("a patch of cloth", "patches of cloth", "Junk", 0, "Remove it, show bob.", 0, 20, "Junk")
+BoneChips = Inventory("a bone chip", "bone chips", "Junk", 0, "Shattered.", 0, 10, "Junk")
+ScarabCarapace = Inventory("a scarab carapace", "scarab carapaces", "Junk", 0, "Somewhat cracked and frail.", 0, 10, "Junk")
+SnakeFang = Inventory("a snake fang", "snake fangs", "Junk", 0, "Pretty sharp.", 0, 10, "Junk")
+Slimeball = Inventory("a ball of slime", "balls of slime", "Junk", 0, "Rubbery texture.", 0, 10, "Junk")
+Scale = Inventory("a reptilian scale", "reptilian scales", "Junk", 0, "They regenerate when pulled off.", 0, 20, "Junk")
+CrocodileFang = Inventory("a crocodile fang", "crocodile fangs", "Junk", 0, "Chipped beyond use.", 0, 10, "Junk")
+Horn = Inventory("a keratin horn", "keratin horns", "Junk", 0, "It's pretty heavy.", 0, 20, "Junk")
+Tusk = Inventory("a broken tusk", "broken tusks", "Junk", 0, "Not as expensive as you think.", 0, 50, "Junk")
+IntactTusk = Inventory("an intact tusk", "intact tusks", "Junk", 0, "Pristine ivory for filthy poachers like you.", 0, 125, "Junk")
+BrokenHoof = Inventory("a broken hoof", "broken hooves", "Junk", 0, "Bleeding bloodhoof.", 0, 20, "Junk")
+OgreEye = Inventory("an ogre eye", "ogre eyes", "Junk", 0, "Gross.", 0, 20, "Junk")
+Beak = Inventory("a torn beak", "torn beaks", "Junk", 0, "The tip is deceptively sharp.", 0, 10, "Junk")
+Feather = Inventory("a feather", "feathers", "Junk", 0, "Birds of it flock together.", 0, 10, "Junk")
+FuzzyLeg = Inventory("a fuzzy leg", "fuzzy legs", "Junk", 0, "Yucky.", 0, 10, "Junk")
+Spinneret = Inventory("a spinneret", "spinnerets", "Junk", 0, "Spits out silk.", 0, 20, "Junk")
+Fang = Inventory("a chipped fang", "chipped fangs", "Junk", 0, "Cracked.", 0, 10, "Junk")
+RippedTendon = Inventory("a tendon", "tendons", "Junk", 0, "Contracts and expands to allow movement.", 0, 20, "Junk")
+Skull = Inventory("a skull", "skulls", "Junk", 0, "Somebody's skull.", 0, 10, "Junk")
+GiantFang = Inventory("a giant fang", "giant fangs", "Junk", 0, "How does it fit in your bag?", 0, 30, "Junk")
+TwitchingLeg = Inventory("a huge twitching leg", "huge twitching legs", "Junk", 0, "Ew.", 0, 30, "Junk")
+TigerFur = Inventory("tiger fur", "tiger furs", "Junk", 0, "Typical bed covers for ethnic households.", 0, 200, "Junk")
+Thorn = Inventory("thorn", "thorns", "Junk", 0, "Ouch!", 0, 10, "Junk")
+CursedSeed = Inventory("a cursed seed", "cursed seeds", "Junk", 0, "Throw them into the dirt and sprout a giant stalk.", 0, 20, "Junk")
+DreadPetal = Inventory("a dread petal", "dread petals", "Junk", 0, "Probably useful for something.", 0, 30, "Junk")
+Rock = Inventory("a rock", "rocks", "Junk", 0, "Holds a lot of sentimental value.", 0, 5, "Junk")
+brimstone = Inventory("a piece of brimstone", "pieces of brimstone", "Junk", 0, "Still hot.", 0, 30, "Normal")
+obsidiancore = Inventory("an obsidian core", "obsidian cores", "Junk", 0, "The heart of a flame elemental.", 0, 50, "Normal")
+ruby = Inventory("a rough ruby", "rough rubies", "Junk", 0, "The sunken eyes of a flame elemental.", 0, 100, "Normal")
+fireessence = Inventory("a fire essence", "fire essences", "Junk", 0, "The soul of a flame elemental.", 0, 100, "Normal")
+enchanting_rune = Inventory("a phantasmal rune", "phantasmal runes", "Junk", 0, "The etched stone glimmers a rainbow spectrum of colors.", 0, 100, "Key")
+phylactery = Inventory("a phylactery", "phylacteries", "Junk", 0, "A crystalline urn, etched with symbols of undeath.", 0, 0, "Key")
 
 
 # Consumables
-HPotion1 = Inventory("a Standard Health Potion", "Standard Health Potions", "Health Potion", 20, "Tastes like syrup. 20 HP.", 0, 20)
-MPotion1 = Inventory("a Standard Mana Potion", "Standard Mana Potions", "Mana Potion", 20, "Tastes sour. 20 Mana.", 0, 20)
-ManaBun = Inventory("a mana bun", "mana buns", "Meal", 30, "Warm and soft, filled with honey-like substance. 30 HP and Mana.", 0, 0)
-Firebomb = Inventory("a firebomb", "firebombs", "Explosive", 20, "Labeled 'DANGER - SHORTFUSE Co. 20 Damage.'", 0, 20)
-Bread = Inventory("a chunk of bread", "chunks of bread", "Food", 30, "Pretty stale. 30 HP.", 0, 5)
-FrogLegs = Inventory("frog legs", "frog legs", "Food", 20, "Still twitching. 15 HP.", 0, 10)
-CrackedFemur = Inventory("a cracked femur", "cracked femora", "Explosive", 30, "Break it on someone's skull.", 0, 30)
-PaleAle = Inventory("a bottle of ale", "bottles of ale", "Drink", 25, "Fruity, crisp and copper in color. 25 Mana.", 0, 20)
-Beer = Inventory("a bottle of beer", "bottles of beer", "Drink", 30, "Tastes like piss. 30 Mana.", 0, 10)
-Wine = Inventory("a bottle of wine", "bottles of wine", "Drink", 10, "For the refined palate. 10 Mana.", 0, 50)
-Cheeseroll = Inventory("a cheese roll", "cheese rolls", "Food", 20, "Goes great with wine. 20 HP.", 0, 10)
-PickledRaptorLung = Inventory("a pickled raptor lung", "pickled raptor lungs", "Food", 30, "Somewhat sour and tangy. 30 HP.", 0, 30)
-PickledElfEars = Inventory("a pickled elf's ear", "pickled elf's ears", "Food", 20, "It's just a plant, don't worry. 20 HP.", 0, 30)
-BlackwaterFish = Inventory("a blackwater fish", "blackwater fishes", "Food", 30, "Greasy, tastes like shit. 30 HP.", 0, 30)
-DreadAle = Inventory("a dread ale", "dread ales", "Drink", 30, "Don't read the ingredients. 30 Mana.", 0, 30)
-Mudbeer = Inventory("a mud beer", "mud beers", "Drink", 20, "You can probably guess the secret ingredient. 20 Mana.", 0, 20)
-DragonbreathGin = Inventory("a flask of Dragonbreath gin", "flasks of Dragonbreath gin", "Drink", 50, "Stings your throat horribly. 50 Mana.", 0, 60)
-DwarvenStout = Inventory("a skin of Dwarven stout", "skins of Dwarven stout", "Drink", 50, "Get it? 30 Mana.", 0, 40)
-StoneBourbon = Inventory("a jug of Stone bourbon", "jugs of Stone bourbon", "Drink", 60, "Has a very strong, lingering taste. 60 Mana.", 0, 50)
-Rockbeer = Inventory("a Rock beer", "Rock beers", "Drink", 30, "The flavor of hops is distinguishable, but not overwhelming. 50 Mana.", 0, 20)
-DesrahGin = Inventory("a flask of Desrah gin", "flasks of Desrah gin", "Drink", 80, "Ridiculously dry. 80 Mana.", 0, 70)
-OnyxianBrew = Inventory("an Onyxian brew", "Onyxian brews", "Drink", 150, "The ultimate Dwarven brew. 150 Mana.", 0, 120)
+HPotion1 = Inventory("a Standard Health Potion", "Standard Health Potions", "Health Potion", 20, "Tastes like syrup. 20 HP.", 0, 20, "Normal")
+MPotion1 = Inventory("a Standard Mana Potion", "Standard Mana Potions", "Mana Potion", 20, "Tastes sour. 20 Mana.", 0, 20, "Normal")
+ManaBun = Inventory("a mana bun", "mana buns", "Meal", 30, "Warm and soft, filled with honey-like substance. 30 HP and Mana.", 0, 0, "Normal")
+Firebomb = Inventory("a firebomb", "firebombs", "Explosive", 20, "Labeled 'DANGER - SHORTFUSE Co. 20 Damage.'", 0, 20, "Normal")
+Bread = Inventory("a chunk of bread", "chunks of bread", "Food", 30, "Pretty stale. 30 HP.", 0, 5, "Normal")
+FrogLegs = Inventory("frog legs", "frog legs", "Food", 20, "Still twitching. 15 HP.", 0, 10, "Normal")
+CrackedFemur = Inventory("a cracked femur", "cracked femora", "Explosive", 30, "Break it on someone's skull.", 0, 30, "Normal")
+PaleAle = Inventory("a bottle of ale", "bottles of ale", "Drink", 25, "Fruity, crisp and copper in color. 25 Mana.", 0, 20, "Normal")
+Beer = Inventory("a bottle of beer", "bottles of beer", "Drink", 30, "Tastes like piss. 30 Mana.", 0, 10, "Normal")
+Wine = Inventory("a bottle of wine", "bottles of wine", "Drink", 10, "For the refined palate. 10 Mana.", 0, 50, "Normal")
+Cheeseroll = Inventory("a cheese roll", "cheese rolls", "Food", 20, "Goes great with wine. 20 HP.", 0, 10, "Normal")
+PickledRaptorLung = Inventory("a pickled raptor lung", "pickled raptor lungs", "Food", 30, "Somewhat sour and tangy. 30 HP.", 0, 30, "Normal")
+PickledElfEars = Inventory("a pickled elf's ear", "pickled elf's ears", "Food", 20, "It's just a plant, don't worry. 20 HP.", 0, 30, "Normal")
+BlackwaterFish = Inventory("a blackwater fish", "blackwater fishes", "Food", 30, "Greasy, tastes like shit. 30 HP.", 0, 30, "Normal")
+DreadAle = Inventory("a dread ale", "dread ales", "Drink", 30, "Don't read the ingredients. 30 Mana.", 0, 30, "Normal")
+Mudbeer = Inventory("a mud beer", "mud beers", "Drink", 20, "You can probably guess the secret ingredient. 20 Mana.", 0, 20, "Normal")
+DragonbreathGin = Inventory("a flask of Dragonbreath gin", "flasks of Dragonbreath gin", "Drink", 50, "Stings your throat horribly. 50 Mana.", 0, 60, "Normal")
+DwarvenStout = Inventory("a skin of Dwarven stout", "skins of Dwarven stout", "Drink", 50, "Get it? 30 Mana.", 0, 40, "Normal")
+StoneBourbon = Inventory("a jug of Stone bourbon", "jugs of Stone bourbon", "Drink", 60, "Has a very strong, lingering taste. 60 Mana.", 0, 50, "Normal")
+Rockbeer = Inventory("a Rock beer", "Rock beers", "Drink", 30, "The flavor of hops is distinguishable, but not overwhelming. 50 Mana.", 0, 20, "Normal")
+DesrahGin = Inventory("a flask of Desrah gin", "flasks of Desrah gin", "Drink", 80, "Ridiculously dry. 80 Mana.", 0, 70, "Normal")
+OnyxianBrew = Inventory("an Onyxian brew", "Onyxian brews", "Drink", 150, "The ultimate Dwarven brew. 150 Mana.", 0, 120, "Normal")
 FruitOfLife = Inventory("\033[1;32;40ma Fruit of Life\033[0m", "\033[1;32;40mFruits of Life\033[0m", "Meal", 99999,
-                        "All costs go to tending to the Tree. Refills HP and Mana.", 0, 500)
-ManaDrink = Inventory("a drink of pure mana", "drinks of pure mana", "Drink", 100, "Glimmers and sparkles with energy. 100 Mana.", 0, 50)
-DrakonidRation = Inventory("a Drakonid ration", "Drakonid rations", "Meal", 50, "Completely bland and utilitarian. 50 HP and Mana.", 0, 50)
-orbofdarkness = Inventory("an Orb of Darkness", "Orbs of Darkness", "Meal", 200, "Shimmers a tint of crimson red. 200 HP and Mana.", 0, 0)
+                        "All costs go to tending to the Tree. Refills HP and Mana.", 0, 500, "Normal")
+ManaDrink = Inventory("a drink of pure mana", "drinks of pure mana", "Drink", 100, "Glimmers and sparkles with energy. 100 Mana.", 0, 50, "Normal")
+DrakonidRation = Inventory("a Drakonid ration", "Drakonid rations", "Meal", 50, "Completely bland and utilitarian. 50 HP and Mana.", 0, 50, "Normal")
+orbofdarkness = Inventory("an Orb of Darkness", "Orbs of Darkness", "Meal", 200, "Shimmers a tint of crimson red. 200 HP and Mana.", 0, 0, "Normal")
 
 
 # Scrolls and Books
-Goosebumps = Inventory("\033[1;32;40mGoosebumps\033[0m", "\033[1;32;40mGoosebumps\033[0m", "Book", Fear, "A true best seller. Teaches: Fear", 0, 100)
+humanrogue = "\"Seek out Tactician Gardun in Hylonia's Academy of War.\""
+humanwarrior = "\"Seek out General Brassam in Hylonia's Academy of War.\""
+humanmage = "\"Your training has finally come to an end. Come to the exalted Collegium Arcana and commune with the Archmage.\""
+humanpriest = "\"Wielder of this parchment is invited to the Temple of Light for training. Speak with anyone there for further orientation...\""
+paperhr = Inventory("hylonian rogue summons", "", "Readable", humanrogue, "Directions to your guild teacher. type \"read hylonian rogue summons\".", 0, 10, "Normal")
+paperhw = Inventory("hylonian warrior summons", "", "Readable", humanwarrior, "Directions to your guild teacher. type \"read hylonian warrior summons\".", 0, 10, "Normal")
+paperhm = Inventory("hylonian mage summons", "", "Readable", humanmage, "Directions to your guild teacher. type \"read hylonian mage summons\".", 0, 10, "Normal")
+paperhp = Inventory("hylonian priest summons", "", "Readable", humanpriest, "Directions to your guild teacher. type \"read hylonian priest summons\".", 0, 10, "Normal")
+#
+dwarfrogue = "[Poorly scribbled Dwarfish] \"Come to the bar, I've got somethin to teach ye!!\" - Ulid the Bard"
+dwarfwarrior = "\"HONE yer martial trance and reach thae highest levels o' fighting prowess, come ta thae Ring 'o War an' speak tae General.\""
+dwarfmage = "\"Come tae me at thae Heart o' thae Mount'n, yung'ne. I 'ave a few arcane techniques ya could use.\" - Orrin"
+dwarfpriest = "\"High Priest Sakhr 'as recently came back tae Iklist-zefon, an' is seekin' new Priests an' Paladins tae train. Come to thae Ring o' Soul.\""
+dwarfshaman = "\"Thae council 'as gotten thae news that ye've been 'avin dreams about thae elements rec'ntly. Come tae Speaker Utham in thae Ring o' Soul."
+paperdr = Inventory("dwarven rogue summons", "", "Readable", dwarfrogue, "Directions to your guild teacher. type \"read dwarven rogue summons\".", 0, 10, "Normal")
+paperdw = Inventory("dwarven warrior summons", "", "Readable", dwarfwarrior, "Directions to your guild teacher. type \"read dwarven warrior summons\".", 0, 10, "Normal")
+paperdm = Inventory("dwarven mage summons", "", "Readable", dwarfmage, "Directions to your guild teacher. type \"read dwarven mage summons\".", 0, 10, "Normal")
+paperdp = Inventory("dwarven priest summons", "", "Readable", dwarfpriest, "Directions to your guild teacher. type \"read dwarven priest summons\".", 0, 10, "Normal")
+paperds = Inventory("dwarven shaman summons", "", "Readable", dwarfshaman, "Directions to your guild teacher. type \"read dwarven shaman summons\".", 0, 10, "Normal")
+#
+melfwarrior = "\"Seek out Caretaker Uyella in the barrows. She's passing on her knowledge to new trainees.\""
+melfmage = "[Your Common language is rusty, but you can make out that this is a flyer for the Collegium Arcana in Hylonia, written by their local Archmage.]"
+melfrogue = "\"Come to the Shadowdancer, in the barrows beneath the Great Tree and learn the unspoken secrets of roguery.\""
+melfpriest = "\"The Priestess at the Altar of the Moon cordially invites you to teach you to commune further with the light of Amar.\""
+melfdruid = "\"The Great Hierophant Princess of Tel'layl rests at the Altar of the Moon, speak to her for further training.\""
+papermr = Inventory("moon rogue summons", "", "Readable", melfwarrior, "Directions to your guild teacher. type \"read moon rogue summons\".", 0, 10, "Normal")
+papermw = Inventory("moon warrior summons", "", "Readable", melfmage, "Directions to your guild teacher. type \"read moon warrior summons\".", 0, 10, "Normal")
+papermm = Inventory("moon mage summons", "", "Readable", melfrogue, "Directions to your guild teacher. type \"read moon mage summons\".", 0, 10, "Normal")
+papermp = Inventory("moon priest summons", "", "Readable", melfpriest, "Directions to your guild teacher. type \"read moon priest summons\".", 0, 10, "Normal")
+papermd = Inventory("moon druid summons", "", "Readable", melfdruid, "Directions to your guild teacher. type \"read moon druid summons\".", 0, 10, "Normal")
+#
+selfwarrior = "\"Come to the Sunguard at the Terrace of the Sun, and recieve further training.\""
+selfmage = "\"Climb the great Ivory Tower of Goldstar and seek out training in the Arcane.\""
+selfrogue = "\"Do you want to learn some tricks? Come to the Firetamer near the Phoenixes and ask for training.\""
+selfpriest = "\"Climb to the tip of the Ivory Tower of Goldstar and seek out the great Dawnwatcher for further training.\""
+papersr = Inventory("golden rogue summons", "", "Readable", selfwarrior, "Directions to your guild teacher. type \"read golden rogue summons\".", 0, 10, "Normal")
+papersw = Inventory("golden warrior summons", "", "Readable", selfmage, "Directions to your guild teacher. type \"read golden warrior summons\".", 0, 10, "Normal")
+papersm = Inventory("golden mage summons", "", "Readable", selfrogue, "Directions to your guild teacher. type \"read golden mage summons\".", 0, 10, "Normal")
+papersp = Inventory("golden priest summons", "", "Readable", selfpriest, "Directions to your guild teacher. type \"read golden priest summons\".", 0, 10, "Normal")
+#
+ogrewarrior = "[Poorly scribbled Ogrish runes] \"YOU FIND CHAMPION GRIMROG\""
+ogremage = "[Poorly scribbled Ogrish runes] \"YOU FIND KOGOL THA TWO-HEADED\""
+ogreshaman = "[Poorly scribbled Ogrish runes] \"YOU GO TO CAMPFIRE AND TALK TO SHAMANS\""
+paperow = Inventory("ogre warrior summons", "", "Readable", ogrewarrior, "Directions to your guild teacher. type \"read ogre warrior summons\".", 0, 10, "Normal")
+paperom = Inventory("ogre mage summons", "", "Readable", ogremage, "Directions to your guild teacher. type \"read ogre mage summons\".", 0, 10, "Normal")
+paperos = Inventory("ogre shaman summons", "", "Readable", ogreshaman, "Directions to your guild teacher. type \"read ogre shaman summons\".", 0, 10, "Normal")
+#
+dragonwarrior = "\"CENTURION GRIMEYE AT THE THIRD GATE ORDERS YOUR PRESENCE. MAKE HASTE!!\""
+dragonmage = "\"INSTRUCTOR PYROCRUOR AT THE COVE OF FLAME ORDERS YOUR PRESENCE. MAKE HASTE!!\""
+dragonpriest = "\"Young one... Come to Elder Konikki at the Cove of Flame to unlock the ancient wisdoms of the Light...\""
+dragonshaman = "\"MINDLASH AT THE COVE OF FLAME ORDERS YOUR PRESENCE. MAKE HASTE!!\""
+dragonrogue = "\"Find me at the Gauntlet. Come alone\". - Korla Blackclaw"
+papertr = Inventory("dragon rogue summons", "", "Readable", dragonwarrior, "Directions to your guild teacher. type \"read dragon rogue summons\".", 0, 10, "Normal")
+papertw = Inventory("dragon warrior summons", "", "Readable", dragonmage, "Directions to your guild teacher. type \"read dragon warrior summons\".", 0, 10, "Normal")
+papertm = Inventory("dragon mage summons", "", "Readable", dragonpriest, "Directions to your guild teacher. type \"read dragon mage summons\".", 0, 10, "Normal")
+papertp = Inventory("dragon priest summons", "", "Readable", dragonshaman, "Directions to your guild teacher. type \"read dragon priest summons\".", 0, 10, "Normal")
+paperts = Inventory("dragon shaman summons", "", "Readable", dragonrogue, "Directions to your guild teacher. type \"read dragon shaman summons\".", 0, 10, "Normal")
+#
+Goosebumps = Inventory("\033[1;32;40mGoosebumps\033[0m", "\033[1;32;40mGoosebumps\033[0m", "Book", Fear, "A true best seller. Teaches: Fear", 0, 100, "Normal")
 RainCallersTome = Inventory("\033[1;32;40mRaincaller's Tome\033[0m", "\033[1;32;40mRaincaller's Tomes\033[0m", "Book", HealingRain,
-                            "What? You think we just WAIT for it to rain?", 0, 150)
+                            "What? You think we just WAIT for it to rain?", 0, 150, "Normal")
 madmandesc = "The ink faded off the sun-bleached paper. You can only make out a few words about artifacts and otherwordly riches."
-MadmanPaper = Inventory("a scribbled paper", "scribbled papers", "Readable", madmandesc, "A folded piece of paper with hastily scribbled writing.", 0, 1)
+MadmanPaper = Inventory("a scribbled paper", "scribbled papers", "Readable", madmandesc, "A folded piece of paper with hastily scribbled writing.", 0, 1, "Normal")
 lostmissive = "Placeholder clue for a desert dungeon."
-LostMissive = Inventory("a lost missive", "lost missives", "Readable", lostmissive, "Sealed and wrapped neatly.", 0, 10)
+LostMissive = Inventory("a lost missive", "lost missives", "Readable", lostmissive, "Sealed and wrapped neatly.", 0, 10, "Normal")
 desertmap = "The canyon separates us from the filthy northerners. The ongoing war between the centaur and the minotaur should be enough to dissuade travelers.\n" \
             "The Swamp of Sorrow is littered with ships and undead crews from northerners who attempted to cut around the sea to attack us.\n" \
             "The windy desert makes the borders of the steppes nigh untraversable. Beware the skittering hellions east of here. Do not approach the ruins.\n" \
             "South of here is a jungle with those godless tribes. Avoid confrontation but do NOT allow them to get your corpse intact."
-DesertMap = Inventory("a Kron desert map", "Kron desert maps", "Readable", desertmap, "Helpful notes for tourists.", 0, 100)
-BFireball = Inventory("Tome: Fireball", "Tomes of Fireball", "Book", Fireball, "Teaches: Fireball", 0, 50)
-BFrostBolt = Inventory("Tome: Frostbolt", "Tomes of Frostbolt", "Book", FrostBolt, "Teaches: Frostbolt", 0, 50)
-BIceLance = Inventory("Tome: Ice Lance - Step I", "Tomes: Ice Lance - Step I", "Book", IceLance, "Teaches: Ice Lance", 0, 50)
-BRelease = Inventory("Tome: Ice Lance - Step II", "Tomes: Ice Lance - Step II", "Book", Release, "Teaches: Release", 0, 50)
-BConjure = Inventory("Tome: Basic Conjuration", "Tomes: Basic Conjuration", "Book", Conjure, "Teaches: Conjure Food", 0, 50)
-BOwlForm = Inventory("Scripture: Owl Form", "Scriptures: Owl Form", "Book", OwlForm, "Teaches: Owl Form", 0, 100)
-BStarfall = Inventory("Scripture: Starfall", "Scriptures: Starfall", "Book", Starfall, "Teaches: Starfall", 0, 50)
-BRejuvenation = Inventory("Scripture: Rejuvenation", "Scriptures: Rejuvenation", "Book", Rejuvenation, "Teaches: Rejuvenation", 0, 50)
-BGraspingRoots = Inventory("Scripture: Grasping Roots", "Scriptures: Grasping Roots", "Book", GraspingRoots, "Teaches: Grasping Roots", 0, 50)
-BCharmBeast = Inventory("Scripture: Charm Beast", "Scriptures: Charm Beast", "Book", CharmBeast, "Teaches: Charm Beast", 0, 200)
-ScrollOfSun = Inventory("Scroll: Sunfire", "Scrolls: Sunfire", "Scroll", Sunfire, "Teaches: Sunfire", 0, 80)
-BCoronalBeam = Inventory("Scroll: Coronal Beam", "Scrolls: Coronal Beam", "Scroll", CoronalBeam, "Teaches: Coronal Beam", 0, 100)
-BMinion = Inventory("Scroll: Summon Minion", "Scrolls: Summon Minion", "Scroll", Minion, "Teaches: Summon Minion", 0, 100)
-BSmite = Inventory("Scroll: Smite", "Scrolls: Smite", "Scroll", Smite, "Teaches: Smite", 0, 80)
-BSilence = Inventory("Scroll: Silence", "Scrolls: Silence", "Scroll", Silence, "Teaches: Silence", 0, 100)
-
+DesertMap = Inventory("a Kron desert map", "Kron desert maps", "Readable", desertmap, "Helpful notes for tourists.", 0, 100, "Normal")
+BFireball = Inventory("Tome: Fireball", "Tomes of Fireball", "Book", Fireball, "Teaches: Fireball", 0, 50, "Normal")
+BFrostBolt = Inventory("Tome: Frostbolt", "Tomes of Frostbolt", "Book", FrostBolt, "Teaches: Frostbolt", 0, 50, "Normal")
+BIceLance = Inventory("Tome: Ice Lance - Step I", "Tomes: Ice Lance - Step I", "Book", IceLance, "Teaches: Ice Lance", 0, 50, "Normal")
+BRelease = Inventory("Tome: Ice Lance - Step II", "Tomes: Ice Lance - Step II", "Book", Release, "Teaches: Release", 0, 50, "Normal")
+BConjure = Inventory("Tome: Basic Conjuration", "Tomes: Basic Conjuration", "Book", Conjure, "Teaches: Conjure Food", 0, 50, "Normal")
+BOwlForm = Inventory("Scripture: Owl Form", "Scriptures: Owl Form", "Book", OwlForm, "Teaches: Owl Form", 0, 100, "Normal")
+BStarfall = Inventory("Scripture: Starfall", "Scriptures: Starfall", "Book", Starfall, "Teaches: Starfall", 0, 50, "Normal")
+BRejuvenation = Inventory("Scripture: Rejuvenation", "Scriptures: Rejuvenation", "Book", Rejuvenation, "Teaches: Rejuvenation", 0, 50, "Normal")
+BGraspingRoots = Inventory("Scripture: Grasping Roots", "Scriptures: Grasping Roots", "Book", GraspingRoots, "Teaches: Grasping Roots", 0, 50, "Normal")
+BCharmBeast = Inventory("Scripture: Charm Beast", "Scriptures: Charm Beast", "Book", CharmBeast, "Teaches: Charm Beast", 0, 200, "Normal")
+ScrollOfSun = Inventory("Scroll: Sunfire", "Scrolls: Sunfire", "Scroll", Sunfire, "Teaches: Sunfire", 0, 80, "Normal")
+BCoronalBeam = Inventory("Scroll: Coronal Beam", "Scrolls: Coronal Beam", "Scroll", CoronalBeam, "Teaches: Coronal Beam", 0, 100, "Normal")
+BMinion = Inventory("Scroll: Summon Minion", "Scrolls: Summon Minion", "Scroll", Minion, "Teaches: Summon Minion", 0, 100, "Normal")
+BSmite = Inventory("Scroll: Smite", "Scrolls: Smite", "Scroll", Smite, "Teaches: Smite", 0, 80, "Normal")
+BSilence = Inventory("Scroll: Silence", "Scrolls: Silence", "Scroll", Silence, "Teaches: Silence", 0, 100, "Normal")
 
 
 # Weapons and Armor
 # [+stamina, +attack, +wisdom, item effect]
-IronDagger = Inventory("an iron dagger", "iron daggers", "Dagger", [0, 5, 0, 0], "Somewhat dull. +5 ATK.", 0, 20)
-RustyScythe = Inventory("a rusty scythe", "rusty scythes", "Scythe", [0, 10, 0, 0], "Great range. Horrible everything else. +10 ATK.", 0, 40)
-ScarabPlate = Inventory("a scarab plate", "scarab plates", "Head", [20, 0, 0, 0], "Exceptionally tough. Try wearing it. +20 STA", 0, 80)
-SharpFang = Inventory("a sharp fang", "sharp fangs", "Dagger", [0, 10, 0, PoisonStrike], "The gland is still attached. +10 ATK.", 0, 60)
-TreantStaff = Inventory("\033[1;32;40ma Treant staff\033[0m", "\033[1;32;40mTreant staves\033[0m", "Staff", [0, 5, 20, Root],
-                        "The living branch of a treant commands the earth. +20 WIS.", 0, 80)
-Stick = Inventory("a stick", "sticks", "Staff", [0, 10, 0, 0], "A cool stick I found. +10 ATK.", 0, 30)
-CentaurAxe = Inventory("a Centaur Axe", "Centaur Axes", "Axe", [0, 25, 0, 0], "Standard issue. +25 ATK.", 0, 100)
-LostShield = Inventory("a lost shield", "lost shields", "Offhand", [50, 0, 0, 0], "Second hand. +50 STA.", 0, 200)
-DuneShield = Inventory("\033[1;32;40mShield of Dunes\033[0m", "\033[1;32;40mShields of Dunes\033[0m", "Offhand", [100, 0, 0, Sirocco],
-                       "The carvings on it are amazing, yet corroded. +100 STA.", 0, 500)
-KronSaber = Inventory("a Kron saber", "Kron sabers", "Sword", [0, 30, 0, 0], "These people really know how to carve their iron. +30 ATK.", 0, 180)
-DesertAmulet = Inventory("a desert amulet", "desert amulets", "Neck", [0, 0, 20, WindWall], "Etched with runes that promise dominion over the wind. +20 WIS.", 0, 80)
-PurpleRobe = Inventory("a purple robe", "purple robes", "Chest", [0, 0, 30, 0], "What a cute color. +30 WIS.", 0, 30)
-GoldenRobe = Inventory("a golden robe", "golden robes", "Chest", [0, 0, 50, 0], "It's fake. +50 WIS.", 0, 50)
-TrimmedRobe = Inventory("\033[1;32;40ma trimmed azure robe\033[0m", "\033[1;32;40mtrimmed azure robes\033[0m", "Chest", [0, 0, 100, 0], "It's glowing... +100 WIS.", 0, 100)
-SilkPants = Inventory("a pair of silk pants", "pairs of silk pants", "Legs", [0, 0, 0, 0], "Comfy, but useless.", 0, 20)
-SilkSlippers = Inventory("a pair of silk slippers", "pairs of silk slippers", "Feet", [0, 0, 0, 0], "Comfy, but useless.", 0, 20)
-Bandana = Inventory("a red bandana", "red bandanas", "Head", [0, 0, 0, 0], "Makes you feel sneakier.", 0, 20)
-Turban = Inventory("a silk turban", "silk turbans", "Head", [0, 0, 30, 0], "Big brain! +30 WIS.", 0, 30)
-IronHelm = Inventory("an iron helmet", "iron helmets", "Head", [20, 0, 0, 0], "A casque for your cranium. +20 STA.", 0, 20)
-IronPlate = Inventory("an iron chestplate", "iron chestplates", "Chest", [50, 0, 0, 0], "Now you can pretend to have abs. +50 STA.", 0, 50)
-IronBoots = Inventory("a pair of iron boots", "pairs of iron boots", "Feet", [20, 0, 0, 0], "Cowboy boots? Bitch, disgusting. +20 STA.", 0, 20)
-IronGreaves = Inventory("a pair of iron greaves", "pairs of iron greaves", "Legs", [30, 0, 0, 0], "Give him his cigar. +30 STA.", 0, 30)
-Shortsword = Inventory("a shortsword", "shortswords", "Sword", [0, 10, 0, 0], "Also known as: the Manlet sword. +10 ATK.", 0, 40)
-IronBuckler = Inventory("an iron buckler", "iron bucklers", "Offhand", [50, 0, 0, 0], "Smack it to scare people off. +50 STA.", 0, 50)
-RobeOfTheDeeps = Inventory("\033[1;32;40mRobe of the Deeps\033[0m", "\033[1;32;40mRobes of the Deeps\033[0m", "Chest", [0, 0, 100, 0],
-                           "Black, trimmed with silver. +100 WIS.", 0, 100)
-IronsilkRobe = Inventory("\033[1;32;40mIronsilk Robe\033[0m", "\033[1;32;40mIronsilk Robes\033[0m", "Chest", [50, 0, 50, 0],
-                         "Shiny. For casters who loathe being glass cannons. +50 STA, +50 WIS.", 0, 100)
-AbyssalStaff = Inventory("\033[1;32;40mAbyssal Staff\033[0m", "\033[1;32;40mAbyssal Staves\033[0m", "Staff", [0, 10, 20, WhirlOfAekhal],
-                         "The onyx-jeweled head is so black it absorbs light. +10 ATK, +20 WIS.", 0, 200)
-Heartmender = Inventory("\033[1;32;40mHeartmender\033[0m", "\033[1;32;40mHeartmenders\033[0m", "Mace", [0, 20, 50, PrayerOfMending],
-                        "Ivory, steel, engraved with golden runes. +20 ATK, +50 WIS.", 0, 200)
-RubyCirclet = Inventory("a ruby circlet", "ruby circlets", "Head", [0, 0, 20, 0], "A beautiful crimson jewel is nested in the front. +20 WIS.", 0, 20)
-SapphireCirclet = Inventory("a sapphire circlet", "sapphire circlets", "Head", [0, 0, 30, 0], "An ocean-blue jewel glimmers in the front. +30 WIS.", 0, 30)
-SteelHammer = Inventory("a steel warhammer", "steel warhammers", "Mace", [0, 20, 0, 0], "A stout and blunt steel warhammer. +20 ATK.", 0, 80)
-BarbedAxe = Inventory("a barbed axe", "barbed axes", "Axe", [0, 30, 0, 0], "Razor sharp to the touch. Don't touch. +30 ATK.", 0, 120)
-ObsidiumScythe = Inventory("\033[1;32;40man Obsidium scythe\033[0m", "\033[1;32;40mObsidium scythes\033[0m", "Scythe", [0, 40, 0, 0],
-                           "Blackish-purple metal, chipped from the bellows of the earth. +40 ATK.", 0, 160)
-TheBlackCleaver = Inventory("\033[1;32;40mthe Black Cleaver\033[0m", "\033[1;32;40mBlack Cleavers\033[0m", "Axe", [50, 20, 0, 0],
-                            "Somewhat boosts your vitality when held properly. +50 STA, +20 ATK.", 0, 130)
-CasqueOfTheMountain = Inventory("a horned helm", "horned helms", "Head", [50, 0, 0, Charge], "Carved to resemble horns of rams the Dwarves so idolize. +50 STA.", 0, 100)
-SteamPoweredFist = Inventory("a steam-powered fist", "steam-powered fists", "Hand", [20, 0, 0, FistBump], "Brother fist! +20 STA.", 0, 80)
-GreenTintedGoggles = Inventory("\033[1;32;40mNightmare vision goggles\033[0m", "\033[1;32;40mNightmare vision goggles\033[0m", "Head", [20, 0, 0, 0],
-                               "Everything looks exactly the same. +20 STA.", 0, 40)
-TommyGun = Inventory("a Tommy gun", "Tommy guns", "Gun", [0, 30, 0, 0], "RAT-TAT-TAT-TAT! +30 ATK.", 0, 120)
-SteelBellyplate = Inventory("a steel bellyplate", "steel bellyplates", "Chest", [50, 0, 0, 0], "Traditional Ogre craftsmanship. +50 STA.", 0, 50)
-SteelHeadcover = Inventory("a steel headcover", "steel headcover", "Head", [30, 0, 0, 0], "It's just a cooking pot. +30 STA.", 0, 30)
-OgreGlove = Inventory("Ogre gloves", "Ogre gloves", "Hands", [30, 0, 0, 0], "RIDICULOUSLY heavy. +30 STA.", 0, 30)
-WildSpear = Inventory("\033[1;32;40ma Wild Spear\033[0m", "\033[1;32;40mWild Spears\033[0m", "Spear", [0, 20, 30, 0],
-                      "Adorned with feathers and shrunken skulls at the neck. +20 ATK, +30 WIS", 0, 110)
-ElvenGlaive = Inventory("an Elven glaive", "Elven glaives", "Scythe", [0, 20, 0, 0], "Curved in the shape of a crescent moon. +20 ATK.", 0, 80)
-FallenHorn = Inventory("a shed horn", "shed horns", "Offhand", [0, 0, 50, 0], "When male Stagkin mature, they shed their small \"milk\" horns. +50 WIS.", 0, 80)
-ElvenMail = Inventory("Elven chainmail", "Elven chainmail", "Chest", [0, 60, 20, 0], "Sturdy mail with some light magical properties. +60 STA, +20 WIS.", 0, 100)
-ElvenHammer = Inventory("an Elven hammer", "Elven hammers", "Mace", [20, 0, 20, 0], "Zirconic, crystalline chipped tip. +20 ATK, +20 WIS.", 0, 100)
-ElvenBlade = Inventory("an Elven blade", "Elven blades", "Sword", [30, 0, 20, 0], "Chipped crystalline edge out of a wing-shaped hilt. +30 ATK, +20 WIS.", 0, 150)
-SunAmulet = Inventory("an Amulet of the Sun", "Amulets of the Sun", "Neck", [0, 0, 50, 0], "Offers magical constitution and faith of the Sunborn. +50 WIS.", 0, 80)
-magmacrown = Inventory("a magma crown", "magma crowns", "Head", [20, 0, 50, 0], "Warm to the touch, harmless to its wearer. +20 STA, +50 WIS.", 0, 80)
-ScalemailPlate = Inventory("a Scalemail plate", "Scalemail plates", "Chest", [0, 100, 0, 0], "The scales are retractable. +100 STA.", 0, 100)
-DragonAxe = Inventory("a Dragon Ax", "Dragon Axes", "Axe", [50, 0, 0, 0], "Adorned with swirling golden wyrms and red scratches. +50 ATK.", 0, 200)
-spectral_cleaver = Inventory("\033[0;36;40mSpectral Cleaver\033[0m", "\033[0;36;40mSpectral Cleavers\033[0m", "Axe", [50, 0, 0, 0],
-                             "The tip is stained with ectoplasm. +50 ATK.", 0, 200)
-skullfrost_shield = Inventory("\033[0;36;40mSkullfrost Kite Shield\033[0m", "\033[0;36;40mSkullfrost Kite Shields\033[0m", "Offhand", [0, 200, 0, Icewall],
-                              "A large crystalline skull glows blue in the center. +200 STA. ", 0, 300)
-the_thornheart = Inventory("\033[0;36;40mthe Thornheart\033[0m", "\033[0;36;40mThornhearts\033[0m", "Neck", [0, 20, 100, Thorns],
-                           "A rose inside a ruby, adorned with jeweled thorns swirling around it. +20 STA, +100 WIS.", 0, 200)
-shadowslippers = Inventory("\033[0;36;40ma pair of shadowslippers\033[0m", "\033[0;36;40mpairs of shadowslippers\033[0m", "Feet", [0, 20, 20, Shadowstep],
-                           "They phase quickly into the ether when tapped. +20 STA, +20 WIS.", 0, 100)
-PhantasmalStaff = Inventory("\033[0;36;40ma Phantasmal Staff\033[0m", "\033[0;36;40mPhantasmal Staves\033[0m", "Staff", [0, 0, 200, PrismaticAnimation],
-                            "The staff's color changes when you tilt it. +200 WIS. ", 0, 1000)
-KamarFistOfTynnin = Inventory("\033[0;35;40mKamar, Wrath of Dunia\033[0m", "\033[0;35;40mKamar, Wrath of Dunia\033[0m", "Sword", [0, 0, 200, 0],
-                            "\"...With her dying breath, the shattered earth cursed men with looming vengeance.\" -Oggomas, Archivist of Eons", 0, 1000)
-totem_of_fire = Inventory("a Totem of Fire", "Totems of Fire", "Offhand", [0, 0, 0, SummonFireTotem], "A log carved and painted with symbols of fire.", 0, 0)
-totem_of_water = Inventory("a Totem of Water", "Totems of Water", "Offhand", [0, 0, 0, SummonWaterTotem], "A log carved and painted with symbols of water.", 0, 0)
-totem_of_air = Inventory("a Totem of Air", "Totems of Air", "Offhand", [0, 0, 0, SummonAirTotem], "A log carved and painted with symbols of air.", 0, 0)
-totem_of_earth = Inventory("a Totem of Earth", "Totems of Earth", "Offhand", [100, 0, 0, 0], "A log carved and painted with symbols of earth. +100 STA.", 0, 0)
+IronDagger = Inventory("an iron dagger", "iron daggers", "Dagger", [0, 5, 0, 0], "Somewhat dull. +5 ATK.", 0, 20, "Normal")
+RustyScythe = Inventory("a rusty scythe", "rusty scythes", "Scythe", [0, 10, 0, 0], "Great range. Horrible everything else. +10 ATK.", 0, 40, "Normal")
+ScarabPlate = Inventory("a scarab plate", "scarab plates", "Head", [20, 0, 0, 0], "Exceptionally tough. Try wearing it. +20 STA", 0, 80, "Normal")
+SharpFang = Inventory("a sharp fang", "sharp fangs", "Dagger", [0, 10, 0, PoisonStrike], "The gland is still attached. +10 ATK.", 0, 60, "Normal")
+TreantStaff = Inventory("a Treant staff", "Treant staves", "Staff", [0, 5, 20, Root],
+                        "The living branch of a treant commands the earth. +20 WIS.", 0, 80, "Uncommon")
+Stick = Inventory("a stick", "sticks", "Staff", [0, 10, 0, 0], "A cool stick I found. +10 ATK.", 0, 30, "Normal")
+CentaurAxe = Inventory("a Centaur Axe", "Centaur Axes", "Axe", [0, 25, 0, 0], "Standard issue. +25 ATK.", 0, 100, "Normal")
+LostShield = Inventory("a lost shield", "lost shields", "Offhand", [50, 0, 0, 0], "Second hand. +50 STA.", 0, 200, "Normal")
+DuneShield = Inventory("Shield of Dunes", "Shields of Dunes", "Offhand", [100, 0, 0, Sirocco],
+                       "The carvings on it are amazing, yet corroded. +100 STA.", 0, 500, "Uncommon")
+KronSaber = Inventory("a Kron saber", "Kron sabers", "Sword", [0, 30, 0, 0], "These people really know how to carve their iron. +30 ATK.", 0, 180, "Normal")
+DesertAmulet = Inventory("a desert amulet", "desert amulets", "Neck", [0, 0, 20, WindWall], "Etched with runes that promise dominion over the wind. +20 WIS.", 0, 80, "Normal")
+PurpleRobe = Inventory("a purple robe", "purple robes", "Chest", [0, 0, 30, 0], "What a cute color. +30 WIS.", 0, 30, "Normal")
+GoldenRobe = Inventory("a golden robe", "golden robes", "Chest", [0, 0, 50, 0], "It's fake. +50 WIS.", 0, 50, "Normal")
+TrimmedRobe = Inventory("a trimmed azure robe", "trimmed azure robes", "Chest", [0, 0, 100, 0], "It's glowing... +100 WIS.", 0, 100, "Uncommon")
+SilkPants = Inventory("a pair of silk pants", "pairs of silk pants", "Legs", [0, 0, 0, 0], "Comfy, but useless.", 0, 20, "Normal")
+SilkSlippers = Inventory("a pair of silk slippers", "pairs of silk slippers", "Feet", [0, 0, 0, 0], "Comfy, but useless.", 0, 20, "Normal")
+Bandana = Inventory("a red bandana", "red bandanas", "Head", [0, 0, 0, 0], "Makes you feel sneakier.", 0, 20, "Normal")
+Turban = Inventory("a silk turban", "silk turbans", "Head", [0, 0, 30, 0], "Big brain! +30 WIS.", 0, 30, "Normal")
+IronHelm = Inventory("an iron helmet", "iron helmets", "Head", [20, 0, 0, 0], "A casque for your cranium. +20 STA.", 0, 20, "Normal")
+IronPlate = Inventory("an iron chestplate", "iron chestplates", "Chest", [50, 0, 0, 0], "Now you can pretend to have abs. +50 STA.", 0, 50, "Normal")
+IronBoots = Inventory("a pair of iron boots", "pairs of iron boots", "Feet", [20, 0, 0, 0], "Cowboy boots? Bitch, disgusting. +20 STA.", 0, 20, "Normal")
+IronGreaves = Inventory("a pair of iron greaves", "pairs of iron greaves", "Legs", [30, 0, 0, 0], "Give him his cigar. +30 STA.", 0, 30, "Normal")
+Shortsword = Inventory("a shortsword", "shortswords", "Sword", [0, 10, 0, 0], "Also known as: the Manlet sword. +10 ATK.", 0, 40, "Normal")
+IronBuckler = Inventory("an iron buckler", "iron bucklers", "Offhand", [50, 0, 0, 0], "Smack it to scare people off. +50 STA.", 0, 50, "Normal")
+RobeOfTheDeeps = Inventory("Robe of the Deeps", "Robes of the Deeps", "Chest", [0, 0, 100, 0], "Black, trimmed with silver. +100 WIS.", 0, 100, "Uncommon")
+IronsilkRobe = Inventory("Ironsilk Robe", "Ironsilk Robes", "Chest", [50, 0, 50, 0], "Shiny. For casters who loathe being glass cannons. +50 STA, +50 WIS.", 0, 100, "Uncommon")
+AbyssalStaff = Inventory("Abyssal Staff", "Abyssal Staves", "Staff", [0, 10, 20, WhirlOfAekhal],
+                         "The onyx-jeweled head is so black it absorbs light. +10 ATK, +20 WIS.", 0, 200, "Uncommon")
+Heartmender = Inventory("Heartmender", "Heartmenders", "Mace", [0, 20, 50, PrayerOfMending], "Ivory, steel, engraved with golden runes. +20 ATK, +50 WIS.", 0, 200, "Uncommon")
+RubyCirclet = Inventory("a ruby circlet", "ruby circlets", "Head", [0, 0, 20, 0], "A beautiful crimson jewel is nested in the front. +20 WIS.", 0, 20, "Normal")
+SapphireCirclet = Inventory("a sapphire circlet", "sapphire circlets", "Head", [0, 0, 30, 0], "An ocean-blue jewel glimmers in the front. +30 WIS.", 0, 30, "Normal")
+SteelHammer = Inventory("a steel warhammer", "steel warhammers", "Mace", [0, 20, 0, 0], "A stout and blunt steel warhammer. +20 ATK.", 0, 80, "Normal")
+BarbedAxe = Inventory("a barbed axe", "barbed axes", "Axe", [0, 30, 0, 0], "Razor sharp to the touch. Don't touch. +30 ATK.", 0, 120, "Normal")
+ObsidiumScythe = Inventory("an Obsidium scythe", "Obsidium scythes", "Scythe", [0, 40, 0, 0],
+                           "Blackish-purple metal, chipped from the bellows of the earth. +40 ATK.", 0, 160, "Uncommon")
+TheBlackCleaver = Inventory("the Black Cleaver", "Black Cleavers", "Axe", [50, 20, 0, 0],
+                            "Somewhat boosts your vitality when held properly. +50 STA, +20 ATK.", 0, 130, "Uncommon")
+CasqueOfTheMountain = Inventory("a horned helm", "horned helms", "Head", [50, 0, 0, Charge],
+                                "Carved to resemble horns of rams the Dwarves so idolize. +50 STA.", 0, 100, "Normal")
+SteamPoweredFist = Inventory("a steam-powered fist", "steam-powered fists", "Hand", [20, 0, 0, FistBump], "Brother fist! +20 STA.", 0, 80, "Normal")
+GreenTintedGoggles = Inventory("Nightmare vision goggles", "Nightmare vision goggles", "Head", [20, 0, 0, 0], "Everything looks exactly the same. +20 STA.", 0, 40, "Uncommon")
+TommyGun = Inventory("a Tommy gun", "Tommy guns", "Gun", [0, 30, 0, 0], "RAT-TAT-TAT-TAT! +30 ATK.", 0, 120, "Normal")
+SteelBellyplate = Inventory("a steel bellyplate", "steel bellyplates", "Chest", [50, 0, 0, 0], "Traditional Ogre craftsmanship. +50 STA.", 0, 50, "Normal")
+SteelHeadcover = Inventory("a steel headcover", "steel headcover", "Head", [30, 0, 0, 0], "It's just a cooking pot. +30 STA.", 0, 30, "Normal")
+OgreGlove = Inventory("Ogre gloves", "Ogre gloves", "Hands", [30, 0, 0, 0], "RIDICULOUSLY heavy. +30 STA.", 0, 30, "Normal")
+WildSpear = Inventory("a Wild Spear", "Wild Spears", "Spear", [0, 20, 30, 0], "Adorned with feathers and shrunken skulls at the neck. +20 ATK, +30 WIS", 0, 110, "Uncommon")
+ElvenGlaive = Inventory("an Elven glaive", "Elven glaives", "Scythe", [0, 20, 0, 0], "Curved in the shape of a crescent moon. +20 ATK.", 0, 80, "Normal")
+FallenHorn = Inventory("a shed horn", "shed horns", "Offhand", [0, 0, 50, 0], "When male Stagkin mature, they shed their small \"milk\" horns. +50 WIS.", 0, 80, "Normal")
+ElvenMail = Inventory("Elven chainmail", "Elven chainmail", "Chest", [60, 0, 20, 0], "Sturdy mail with some light magical properties. +60 STA, +20 WIS.", 0, 100, "Normal")
+ElvenHammer = Inventory("an Elven hammer", "Elven hammers", "Mace", [0, 20, 20, 0], "Zirconic, crystalline chipped tip. +20 ATK, +20 WIS.", 0, 100, "Normal")
+ElvenBlade = Inventory("an Elven blade", "Elven blades", "Sword", [0, 30, 20, 0], "Chipped crystalline edge out of a wing-shaped hilt. +30 ATK, +20 WIS.", 0, 150, "Normal")
+SunAmulet = Inventory("an Amulet of the Sun", "Amulets of the Sun", "Neck", [0, 0, 50, 0], "Offers magical constitution and faith of the Sunborn. +50 WIS.", 0, 80, "Normal")
+magmacrown = Inventory("a magma crown", "magma crowns", "Head", [20, 0, 50, 0], "Warm to the touch, harmless to its wearer. +20 STA, +50 WIS.", 0, 80, "Normal")
+ScalemailPlate = Inventory("a Scalemail plate", "Scalemail plates", "Chest", [100, 0, 0, 0], "The scales are retractable. +100 STA.", 0, 100, "Normal")
+DragonAxe = Inventory("a Dragon Ax", "Dragon Axes", "Axe", [0, 50, 0, 0], "Adorned with swirling golden wyrms and red scratches. +50 ATK.", 0, 200, "Normal")
+spectral_cleaver = Inventory("Spectral Cleaver", "Spectral Cleavers", "Axe", [0, 100, 0, 0], "The tip is stained with ectoplasm. +50 ATK.", 0, 200, "Rare")
+skullfrost_shield = Inventory("Skullfrost Kite Shield", "Skullfrost Kite Shields", "Offhand", [200, 0, 0, Icewall],
+                              "A large crystalline skull glows blue in the center. +200 STA. ", 0, 300, "Rare")
+the_thornheart = Inventory("the Thornheart", "Thornhearts", "Neck", [20, 0, 100, Thorns],
+                           "A rose inside a ruby, adorned with jeweled thorns swirling around it. +20 STA, +100 WIS.", 0, 200, "Rare")
+shadowslippers = Inventory("a pair of shadowslippers", "pairs of shadowslippers", "Feet", [20, 0, 20, Shadowstep],
+                           "They phase quickly into the ether when tapped. +20 STA, +20 WIS.", 0, 100, "Rare")
+PhantasmalStaff = Inventory("a Phantasmal Staff", "Phantasmal Staves", "Staff", [0, 0, 200, PrismaticAnimation],
+                            "The staff's color changes when you tilt it. +200 WIS. ", 0, 1000, "Rare")
+KamarFistOfTynnin = Inventory("Kamar, Wrath of Dunia", "Kamar, Wrath of Dunia", "Sword", [0, 200, 200, 0],
+                            "\"...With her dying breath, the shattered earth cursed men with looming vengeance.\" -Oggomas, Archivist of Eons", 0, 1000, "Epic")
+totem_of_fire = Inventory("a Totem of Fire", "Totems of Fire", "Offhand", [0, 0, 0, SummonFireTotem], "A log carved and painted with symbols of fire.", 0, 0, "Normal")
+totem_of_water = Inventory("a Totem of Water", "Totems of Water", "Offhand", [0, 0, 0, SummonWaterTotem], "A log carved and painted with symbols of water.", 0, 0, "Normal")
+totem_of_air = Inventory("a Totem of Air", "Totems of Air", "Offhand", [0, 0, 0, SummonAirTotem], "A log carved and painted with symbols of air.", 0, 0, "Normal")
+totem_of_earth = Inventory("a Totem of Earth", "Totems of Earth", "Offhand", [100, 0, 0, 0], "A log carved and painted with symbols of earth. +100 STA.", 0, 0, "Normal")
+WornCudgel = Inventory("a worn cudgel", "worn cudgels", "Mace", [0, 5, 0, 0], "Beaten and nearly useless. +5 ATK.", 0, 0, "Junk")
+DullBlade = Inventory("a dull blade", "dull blades", "Sword", [0, 5, 0, 0], "Dull edges. Barely usable. +5 ATK.", 0, 0, "Junk")
+BentWand = Inventory("a bent wand", "bent wands", "Staff", [0, 5, 0, 0], "Chipped, old and magically inert. +5 ATK.", 0, 0, "Junk")
+Rags = Inventory("Rags", "Rags", "Chest", [0, 0, 0, 0], "Something to protect you from the elements.", 0, 0, "Junk")
+LinenShorts = Inventory("a pair of linen shorts", "pairs of linen shorts", "Legs", [0, 0, 0, 0], "Better than nothing.", 0, 0, "Junk")
+PlankShield = Inventory("a plank shield", " plank shields", "Offhand", [10, 0, 0, 0], "A miniature raft. +10 STA.", 0, 0, "Junk")
+AcolyteRobe = Inventory("Acolyte's Robe", "Acolyte's Robes", "Chest", [50, 0, 100, RobeTap], "A glowing, grim robe of death.", 0, 0, "Uncommon")
 
 
-set = Set(Fists, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
+set = Set(Fists, Nothing, Nothing, Rags, LinenShorts, Nothing, Nothing, Nothing, Nothing, Nothing)
+
 
 nothing_drops = [Nothing, Nothing, Nothing, Nothing, Nothing,
                  Nothing, Nothing, Nothing, Nothing, Nothing]
@@ -2974,7 +3213,9 @@ inventory = [Gold, GoblinSkin, TornImpWing, GnollFang, CritterFur, PatchOfCloth,
              AbyssalStaff, Heartmender, RubyCirclet, SapphireCirclet, SteelHammer, BarbedAxe, ObsidiumScythe, TheBlackCleaver, CasqueOfTheMountain, SteamPoweredFist,
              GreenTintedGoggles, TommyGun, SteelBellyplate, SteelHeadcover, OgreGlove, WildSpear, ElvenGlaive, FallenHorn, ElvenMail, ElvenHammer, ElvenBlade, SunAmulet,
              magmacrown, ScalemailPlate, DragonAxe, spectral_cleaver, skullfrost_shield, the_thornheart, shadowslippers, PhantasmalStaff, KamarFistOfTynnin, totem_of_fire,
-             totem_of_earth, totem_of_water, totem_of_air]
+             totem_of_earth, totem_of_water, totem_of_air, Nothing, Fists, WornCudgel, DullBlade, BentWand, Rags, LinenShorts, PlankShield, Tusk, IntactTusk,
+             paperhw, paperhm, paperhr, paperhp, paperdr, paperdw, paperdm, paperdp, paperds, papermr, papermw, papermm, papermp, papermd, papersr, papersw, papersm, papersp,
+             paperow, paperom, paperos, papertr, papertw, papertm, papertp, paperts, AcolyteRobe]
 
 farmer.items_sold = [Bread, RustyScythe, RainCallersTome]
 Librarian.items_sold = [BFireball, BFrostBolt, BIceLance, BRelease, BConjure]
@@ -3020,6 +3261,7 @@ TALENTBarblur.damage = monkclone
 
 
 goblin = Enemy('a goblin', 50, 5, 2, "A goblin from the uncharted caverns beneath Iklisztefon.", [], goblin_drops, "Humanoid", [], None)
+skeleton = Enemy('a decaying skeleton', 50, 5, 2, "Some demonic energy has revived and abandoned this one.", [], skeleton_drops, "Undead", [], None)
 woodimp = Enemy('a captured wood imp', 30, 5, 2,"A wriggling Fraba imp, as tall as three apples. Very slippery.", [], woodimp_drops, "Humanoid", [], None)
 salamander = Enemy('a lost Salamander scout', 80, 20, 1, "Far away from its warm and dry homeland.", [], nothing_drops, "Tynnin", [FlameLick], None)
 gnoll = Enemy('a scrawny gnoll', 60, 5, 1, "If it was stronger it could make a living as a highway bandit.", [], gnoll_drops, "Humanoid", [], None)
@@ -3028,7 +3270,7 @@ wildbear = Enemy('a bear', 80, 15, 1, "Quick! Play dead!", [], critter_drops, "B
 highwayman = Enemy('a Human highwayman', 70, 10, 2, "He's staring at your belongings.", [], bandit_drops, "Humanoid", [], None)
 swolefrog = Enemy('a swole frog', 20, 20, 2, "Chad-ilay... Chad-ilay...", [], frog_drops, "Beast", [], None)
 hugeskunk = Enemy('an enormous skunk', 10, 10, 1, "Always face it from the front.", [], critter_drops, "Beast", [], None)
-humanspy = Enemy('a human spy', 70, 10, 2, 'Obviously just visiting a relative.', [], bandit_drops, "Humanoid", [], None)
+humanspy = Enemy('a bandit', 70, 10, 2, 'Obviously just visiting a relative.', [], bandit_drops, "Humanoid", [], None)
 vengefulghoul = Enemy('a vengeful ghoul', 50, 10, 1, "Holding a grudge for that long is impressive.", [], nothing_drops, "Undead", [Fear], None)
 skeletalservant = Enemy('a skeltal servant', 60, 10, 1, "When you tell a dedicated waiter to wait too long", [], skeleton_drops, "Undead", [Lifetap], None)
 blackscarab = Enemy("a black scarab", 30, 5, 2, "It's shiny.", [], scarab_drops, "Beast", [], None)
@@ -3084,7 +3326,7 @@ ranissius_thornhaart = Enemy("Ranissius Thornhaart", 200, 20, 1, "\"The Crimson 
 flesh_golem = Enemy("a shifting phantasm", 400, 20, 1, "The formless bubble of light that shifts in and out of existence.", [], phantasm_drops, "Undead", [], None)
 
 
-plains_of_strife.enemy_table = [goblin, gnoll, humanspy, salamander]
+plains_of_strife.enemy_table = [goblin, gnoll, skeleton, salamander]
 reothian_glades.enemy_table = [woodimp, swolefrog, hugeskunk, gnoll, humanspy]
 the_whitechapel.enemy_table = [vengefulghoul]
 estate_thornhaart.enemy_table = [vengefulghoul, skeletalservant, blackscarab]
@@ -3124,16 +3366,16 @@ thornhaart_basement.enemy_table = [ranissius_thornhaart, flesh_golem]
 
 bring_linen = Quest("Fetch Some Furs", "Collect", CritterFur, 3, 0, 100, 500, None, "I've been getting into weaving lately, and I was curious how critter fur could fit into"
                                                                                     " the equation. Could you fetch me 3 pieces of critter fur from the nearby plains?",
-                                                                                    "Have you gotten those furs yet?", "Thank you!", None)
+                                                                                    "Have you gotten those furs yet?", "Thank you!", None, 0)
 bring_linen.followup = bring_linen
 OldManMarcus.quest = bring_linen
 boots = Quest('She Put "Cheater" On The Warboots!', "Collect", IronBoots, 1, 0, 100, 1000, None, "This HAS to stop. This is NEVER gonna end. \nLook what she did to my favorite "
                                                                                      "boots! She cut my favorite boots! Not that warboots! Not the WARBOOTS!! She "
                                                                                      'did "Curse You, Swine" on the warboots!!\n'
                                                                                      "She put poisoned worms in a napkin!? Harpies are devious!! I'm gonna need a "
-                                                                                     "new pair...", 'She put "CHEATER" on the warboots...', "Thank you!", [])
+                                                                                     "new pair...", 'She put "CHEATER" on the warboots...', "Thank you!", [], 0)
 OfficerErathos.quest = boots
-enchanter3 = Quest("Phantasmal Staff: The Jewel", "Collect", enchanting_rune, 1, 0, 0, 5000, PhantasmalStaff, "I'll need a rune powerful enough "
+enchanter3 = Quest("Phantasmal Staff: The Jewel", "Collect", enchanting_rune, 1, 0, 0, 7000, PhantasmalStaff, "I'll need a rune powerful enough "
                                                                                                   "to act as the jewel head and focus of the staff. This might be a bit too "
                                                                                                   "much to ask, but a decent one I know of has been stolen from the college's "
                                                                                                   "laboratorium. I hear whoever owns the Estate of Thornhaart is using it to "
@@ -3141,17 +3383,35 @@ enchanter3 = Quest("Phantasmal Staff: The Jewel", "Collect", enchanting_rune, 1,
                                                                                                   "To reach the Estate of Thornhaart, you'll have to go out of the kingdom and "
                                                                                                   "into the Outskirts, and from there, cross through the Whitechapel.",
                                                                                                   "You've done an amazing job. You can keep the staff. You need it more."
-                                                                                                  , [])
-enchanter2 = Quest("Phantasmal Staff: The Neck", "Collect", PatchOfCloth, 2, 0, 0, 1000, None, "The cloth that the bandits out in the plains of strife wear has "
+                                                                                                  , [], 0)
+enchanter2 = Quest("Phantasmal Staff: The Neck", "Collect", PatchOfCloth, 2, 0, 0, 3000, None, "The cloth that the bandits out in the plains of strife wear has "
                                                                                               "some anti-magic properties that when amplified will keep the staff's wielder "
                                                                                               "safe from any magical recoil or feedback. Bring me two pieces of it to fasten.",
                                                                                               "Don't get yourself killed out there.",
-                                                                                              "Amzing job. Now, for the final ingredient.", enchanter3)
+                                                                                              "Amazing job. Now, for the final ingredient.", enchanter3, 0)
 enchanter1 = Quest("Phantasmal Staff: The Base", "Collect", TreantStaff, 1, 0, 0, 1000, None, "I've been eyeing this library for weeks, waiting for the right person to come "
                                                                                             "along and help me craft an amazing staff I wrote about. If you're wiling to help "
                                                                                             "me, you can start with the base. The branches of the Treants in the Blackwood "
                                                                                             "make great staves thanks to their potent magical energies.",
                                                                                             "Beware the Blackwood and its denizens.",
                                                                                             "Good. What I need, now, is some sturdy cloth to act as the damper between the neck "
-                                                                                            "and the head.", enchanter2)
+                                                                                            "and the head.", enchanter2, 0)
 EnchanterAurilius.quest = enchanter1
+necrorobe2 = Quest("Acolyte's Robe (2/2)", "Collect", Skull, 2, 0, 0, 3000, AcolyteRobe, "Goblins are foul beings that carry some shred of demonic energy in their bodies. I "
+                                                                                         "have fashioned a robe of their skin that will serve you well. What I also need is "
+                                                                                         "two humanoid skulls to rest upon the shoulderpads that will further focus the energies "
+                                                                                         "of the robe. Go now, and may Death guide your path.",
+                                                                                         "Skeletons by the city gates tend to drop the clean, intact skulls they've "
+                                                                                         "been reanimated with in the first place.",
+                                                                                         "Oh, you've been too kind. Please accept this gift, and let none know "
+                                                                                         "of our little secret. I have more weaving to do.", [], 0)
+necrorobe1 = Quest("Acolyte's Robe (1/2)", "Collect", GoblinSkin, 3, 0, 0, 1000, None, "You seek to serve a messenger of Death, then, hmm? I have a little errand you could "
+                                                                                       "embark on for me. There's something in it for you and I get to practice my shadow-"
+                                                                                       "weaving skills. If you have three pieces of goblin skin on you, I'll get to work.",
+                                                                                       "You'll find these filth ways out of the city gates.",
+                                                                                        "Splendid. We can keep working on my masterpiece once you're ready for the next step.",
+                                                                                         necrorobe2, 0)
+NecromancerEkrub.quest = necrorobe1
+
+
+questList = [bring_linen, boots, enchanter1, enchanter2, enchanter3, necrorobe2, necrorobe1]

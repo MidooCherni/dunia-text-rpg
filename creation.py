@@ -17,7 +17,7 @@ def create_character(pc):
     print("kam'kalei - The Tree of Life")
     print("\n   The Divine Pact:")
     print("human - The Crusader Kingdom of Hylonia")
-    print("shan'kalei - Goldstar, the Sun's Abode")
+    print("sham'kalei - Goldstar, the Sun's Abode")
 #    print("skyborn - Au, The Golden Citadel")
 #    print("centaur - Nomads of the Wastelands")
 #    print("\n   The Underworld:")
@@ -31,12 +31,12 @@ def create_character(pc):
 #    print("nymir - Sajrokka, Heart of the Jungle")
 #    print("girdani - The Monkey Isles")
     chosen_race = ""
-    playable_races = ["tynnin", "dragon", "reptilian", "ogre", "dwarf", "human", "sun elf", "moon elf", "sea elf", "halfling", "shan'kalei", "shankalei", "kam'kalei",
+    playable_races = ["tynnin", "dragon", "reptilian", "ogre", "dwarf", "human", "sun elf", "moon elf", "sea elf", "halfling", "sham'kalei", "shamkalei", "kam'kalei",
                       "kamkalei", "markalei", "mer'kalei", "skyborn", "angel", "khanfus", "centaur", "minotaur", "undead", "skeleton", "zombie", "demon"]
-    while chosen_race not in playable_races:
+    while chosen_race not in playable_races and chosen_race not in ["1", "2", "3", "4", "5", "6"]:
         chosen_race = input("\n>")
         chosen_race = chosen_race.lower()
-        if chosen_race == "tynnin" or chosen_race == "dragon" or chosen_race == "reptilian":
+        if chosen_race == "tynnin" or chosen_race == "dragon" or chosen_race == "reptilian" or chosen_race == "1":
             pc.race = "Dragon"
             cls()
             print("You have chosen the TYNNIN.\nFearsome and wrathful warriors of the Dragon Empire,"
@@ -48,28 +48,28 @@ def create_character(pc):
             pc.atk += 10
             pc.status.append("regeneration")
             pc.location = world.draenin
-        elif chosen_race == "human":
+        elif chosen_race == "human" or chosen_race == "5":
             pc.race = "Human"
             cls()
             print("You have chosen the HUMAN.\nZealous warriors of light, on a dedicated crusade to rid the world of the chaotic Dragons and the vile Undead. "
                   "Slight boosts to every stat.\nMay use any weapon or armor regardless of class restrictions.")
             allowed_strength_classes = ["knight", "paladin", "barbarian", "ranger"]
-            allowed_intellect_classes = ["priest", "wizard"]
+            allowed_intellect_classes = ["priest", "wizard", "necromancer"]
             allowed_agility_classes = ["ranger", "monk", "assassin", "bard"]
             pc.location = world.hylonian_kingdom
-        elif chosen_race == "dwarf":
+        elif chosen_race == "dwarf" or chosen_race == "2":
             pc.race = "Dwarf"
             cls()
             print("You have chosen the DWARF.\nStout and kind-hearted creatures born of stone, they live in cave complexes and hollow mountains and are particularly "
                   "fond of metallurgy.\nBoost to Stamina.\nMay cleanse out all negative status effects with their stone form.")
             allowed_strength_classes = ["knight", "barbarian", "shaman", "ranger"]
-            allowed_intellect_classes = ["priest", "wizard", "shaman",]
+            allowed_intellect_classes = ["priest", "wizard", "shaman"]
             allowed_agility_classes = ["ranger", "monk", "assassin", "bard"]
             pc.sta += 50
             pc.hp += 50
             pc.spells.append(world.DCleanse)
             pc.location = world.iklistzefon
-        elif chosen_race == "ogre":
+        elif chosen_race == "ogre" or chosen_race == "3":
             pc.race = "Ogre"
             cls()
             print("You have chosen the OGRE.\nDeeply misunderstood creatures, ridiculed for their somewhat low intellect. They are rotund and blissfully jovial, and bear "
@@ -80,19 +80,19 @@ def create_character(pc):
             pc.sta += 100
             pc.hp += 100
             pc.location = world.redrock
-        elif chosen_race == "sun elf" or chosen_race == "shankalei" or chosen_race == "sham'kalei":
+        elif chosen_race == "sun elf" or chosen_race == "shamkalei" or chosen_race == "sham'kalei" or chosen_race == "6":
             pc.race = "Sun Elf"
             cls()
             print("You have chosen the SUN ELF.\nMystical, svelt beings obsessed with the magical nature of life, they live in their mage city of Goldstar, built upon "
                   "the drifting isles off the northern coast of Karra.\nBoost to Wisdom.\nMay life tap for mana.")
             allowed_strength_classes = ["knight", "paladin", "ranger"]
-            allowed_intellect_classes = ["priest", "wizard", "necromancer",]
-            allowed_agility_classes = ["ranger", "monk", "assassin", "bard"]
+            allowed_intellect_classes = ["priest", "wizard",]
+            allowed_agility_classes = ["ranger", "assassin", "bard"]
             pc.spells.append(world.SelfRacial)
             pc.wis += 50
             pc.mana += 50
             pc.location = world.goldstar
-        elif chosen_race == "moon elf" or chosen_race == "kam'kalei" or chosen_race == "kamkalei":
+        elif chosen_race == "moon elf" or chosen_race == "kam'kalei" or chosen_race == "kamkalei" or chosen_race == "4":
             pc.race = "Moon Elf"
             cls()
             print("You have chosen the MOON ELF.\nMystical beings of mesmerizing beauty that rarely interact with other cultures, they live to protect and nourish "
@@ -102,7 +102,7 @@ def create_character(pc):
             allowed_agility_classes = ["ranger", "monk", "assassin", "bard", "druid"]
             pc.speed = 3
             pc.location = world.the_blackwood
-        elif chosen_race == "halfling":
+        elif chosen_race == "halfling UNIMPLEMENTED":
             pc.race = "Halfling"
             cls()
             print("You have chosen the HALFLING.\nShort creatures with large, hairy feet who are void of facial hair, they share the Dwarves' fondness of life and sense "
@@ -111,7 +111,7 @@ def create_character(pc):
             allowed_intellect_classes = ["priest", "shaman", "druid"]
             allowed_agility_classes = ["ranger", "monk", "assassin", "bard", "druid"]
             pc.spells.append(world.Stealth)
-        elif chosen_race == "mer'kalei" or chosen_race == "merkalei" or chosen_race == "sea elf":
+        elif chosen_race == "mer'kalei UNIMPLEMENTED" or chosen_race == "merkalei UNIMPLEMENTED" or chosen_race == "sea elf UNIMPLEMENTED":
             pc.race = "Mer'kalei"
             cls()
             print("You have chosen the MER'KALEI.\nElves with translucent skin and a feint azure coloration. They live independent of land-dwellers in a city under the sea. "
@@ -120,7 +120,7 @@ def create_character(pc):
             allowed_intellect_classes = ["priest", "wizard", "necromancer", "shaman"]
             allowed_agility_classes = ["assassin", "bard"]
             pc.spells.append(world.SirenForm)
-        elif chosen_race == "skyborn" or chosen_race == "angel":
+        elif chosen_race == "skyborn UNIMPLEMENTED" or chosen_race == "angel UNIMPLEMENTED":
             pc.race = "Skyborn"
             cls()
             print("You have chosen the SKYBORN.\nGiants of pure lights, with skin of true gold, dedicated to an endless service to the light and to the eradication of evil. "
@@ -128,7 +128,7 @@ def create_character(pc):
             allowed_strength_classes = ["knight", "paladin"]
             allowed_intellect_classes = ["priest"]
             allowed_agility_classes = ["bard"]
-        elif chosen_race == "khanfus":
+        elif chosen_race == "khanfus UNIMPLEMENTED":
             pc.race = "Khanfus"
             cls()
             print("You have chosen the KHANFUS.\nSkittering beasts who dwell in the forgotten underground catacombs of southern Karra, dedicating themselves to deep research "
@@ -136,7 +136,7 @@ def create_character(pc):
             allowed_strength_classes = ["knight", "shaman"]
             allowed_intellect_classes = ["wizard", "necromancer", "shaman"]
             allowed_agility_classes = ["assassin"]
-        elif chosen_race == "centaur":
+        elif chosen_race == "centaur UNIMPLEMENTED":
             pc.race = "Centaur"
             cls()
             print("You have chosen the CENTAUR.\nThe native nomadic race of guardians that roam southern Karra, they are incredibly fast, deceptively agile, and in tune "
@@ -145,7 +145,7 @@ def create_character(pc):
             allowed_intellect_classes = ["shaman"]
             allowed_agility_classes = ["ranger", "bard"]
             pc.spells.append(world.WarriorCharge)
-        elif chosen_race == "minotaur":
+        elif chosen_race == "minotaur UNIMPLEMENTED":
             pc.race = "Minotaur"
             cls()
             print("You have chosen the MINOTAUR.\nMassive, short-tempered bestial folk of the wastelands, they are burly and fond of weapon-making.\nMay charge at their enemies, "
@@ -153,7 +153,7 @@ def create_character(pc):
             allowed_strength_classes = ["knight", "barbarian", "shaman", "ranger"]
             allowed_intellect_classes = ["shaman"]
             allowed_agility_classes = ["ranger"]
-        elif chosen_race == "undead" or chosen_race == "skeleton" or chosen_race == "zombie":
+        elif chosen_race == "undead UNIMPLEMENTED" or chosen_race == "skeleton UNIMPLEMENTED" or chosen_race == "zombie UNIMPLEMENTED":
             pc.race = "Undead"
             cls()
             print("You have chosen the UNDEAD.\nRotting carcasses re-infused with memories and consciousness, they hold a deep grudge for life that stems from jealousy.\nMay "
@@ -161,7 +161,7 @@ def create_character(pc):
             allowed_strength_classes = ["knight"]
             allowed_intellect_classes = ["priest", "wizard", "necromancer"]
             allowed_agility_classes = ["monk", "assassin"]
-        elif chosen_race == "demon":
+        elif chosen_race == "demon UNIMPLEMENTED":
             pc.race = "Demon"
             cls()
             print("You have chosen the DEMON.\nMalicious beasts from the deepest, coldest corners of the universe, they are sent into existence with the sole purpose of \n"
@@ -302,3 +302,69 @@ def create_character(pc):
               "Shamanism is the essential magic through which the tribal priests of the primitive races of Dunia control the elements and spirits.")
     print("Your character has been forged. The wheel of fate is turning...\n")
     print(pc.name + " the " + pc.race + " " + pc.job + ", welcome to the World of Dunia.")
+    if pc.job in ["Bard", "Ranger", "Necromancer", "Assassin", "Barbarian"]:
+        pc.set.weapon = world.DullBlade
+    if pc.job in ["Knight", "Paladin", "Priest", "Shaman"]:
+        pc.set.weapon = world.WornCudgel
+    if pc.job in ["Knight", "Paladin"]:
+        pc.set.offhand = world.PlankShield
+    if pc.job in ["Wizard", "Druid"]:
+        pc.set.weapon = world.BentWand
+    if pc.race == "Human":
+        if pc.job in ["Knight", "Barbarian"]:
+            pc.inventory[pc.inventory.index(world.paperhw)].quantity += 1
+        elif pc.job in ["Wizard", "Necromancer"]:
+            pc.inventory[pc.inventory.index(world.paperhm)].quantity += 1
+        elif pc.job in ["Assassin", "Monk", "Bard", "Ranger"]:
+            pc.inventory[pc.inventory.index(world.paperhr)].quantity += 1
+        elif pc.job in ["Priest", "Paladin"]:
+            pc.inventory[pc.inventory.index(world.paperhp)].quantity += 1
+    if pc.race == "Dwarf":
+        if pc.job in ["Knight", "Barbarian"]:
+            pc.inventory[pc.inventory.index(world.paperdw)].quantity += 1
+        elif pc.job in ["Wizard", "Necromancer"]:
+            pc.inventory[pc.inventory.index(world.paperdm)].quantity += 1
+        elif pc.job in ["Assassin", "Monk", "Bard", "Ranger"]:
+            pc.inventory[pc.inventory.index(world.paperdr)].quantity += 1
+        elif pc.job in ["Priest", "Paladin"]:
+            pc.inventory[pc.inventory.index(world.paperdp)].quantity += 1
+        elif pc.job in ["Shaman", "Druid"]:
+            pc.inventory[pc.inventory.index(world.paperds)].quantity += 1
+    if pc.race == "Moon Elf":
+        if pc.job in ["Knight", "Barbarian"]:
+            pc.inventory[pc.inventory.index(world.papermw)].quantity += 1
+        elif pc.job in ["Wizard", "Necromancer"]:
+            pc.inventory[pc.inventory.index(world.papermm)].quantity += 1
+        elif pc.job in ["Assassin", "Monk", "Bard", "Ranger"]:
+            pc.inventory[pc.inventory.index(world.papermr)].quantity += 1
+        elif pc.job in ["Priest", "Paladin"]:
+            pc.inventory[pc.inventory.index(world.papermp)].quantity += 1
+        elif pc.job in ["Shaman", "Druid"]:
+            pc.inventory[pc.inventory.index(world.paperms)].quantity += 1
+    if pc.race == "Sun Elf":
+        if pc.job in ["Knight", "Barbarian"]:
+            pc.inventory[pc.inventory.index(world.papersw)].quantity += 1
+        elif pc.job in ["Wizard", "Necromancer"]:
+            pc.inventory[pc.inventory.index(world.papersm)].quantity += 1
+        elif pc.job in ["Assassin", "Monk", "Bard", "Ranger"]:
+            pc.inventory[pc.inventory.index(world.papersr)].quantity += 1
+        elif pc.job in ["Priest", "Paladin"]:
+            pc.inventory[pc.inventory.index(world.papersp)].quantity += 1
+    if pc.race == "Ogre":
+        if pc.job in ["Knight", "Barbarian"]:
+            pc.inventory[pc.inventory.index(world.paperow)].quantity += 1
+        elif pc.job in ["Wizard", "Necromancer"]:
+            pc.inventory[pc.inventory.index(world.paperom)].quantity += 1
+        elif pc.job in ["Shaman", "Druid"]:
+            pc.inventory[pc.inventory.index(world.paperos)].quantity += 1
+    if pc.race == "Dragon":
+        if pc.job in ["Knight", "Barbarian"]:
+            pc.inventory[pc.inventory.index(world.papertw)].quantity += 1
+        elif pc.job in ["Wizard", "Necromancer"]:
+            pc.inventory[pc.inventory.index(world.papertm)].quantity += 1
+        elif pc.job in ["Assassin", "Monk", "Bard", "Ranger"]:
+            pc.inventory[pc.inventory.index(world.papertr)].quantity += 1
+        elif pc.job in ["Priest", "Paladin"]:
+            pc.inventory[pc.inventory.index(world.papertp)].quantity += 1
+        elif pc.job in ["Shaman", "Druid"]:
+            pc.inventory[pc.inventory.index(world.paperts)].quantity += 1
