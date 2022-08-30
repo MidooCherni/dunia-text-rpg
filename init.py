@@ -75,7 +75,7 @@ class Player:
 
 
 def genTip():
-    l = random.randint(0, 15)
+    l = random.randint(0, 12)
     if l == 0: print("\nPROTIP: Most talents are functional now.")
     elif l == 1: print("\nPROTIP: The Dragon Empire and Redrock are linked by a flight route.\nFind the elder in either cities.")
     elif l == 2: print("\nPROTIP: This game isn't a finished product yet.\nQuest, kill, buy and sell, say hi to people you meet..")
@@ -87,13 +87,8 @@ def genTip():
     elif l == 8: print("\nPLANNED IN THE FUTURE: Fishing. Hunting. Herbalism. Mining.\nI don't know, something relaxing. Maybe tea brewing or cooking.")
     elif l == 9: print("\nPROTIP: There's a total of ten of these. Keep track of them.\nA round also passes per command, so use it to pass time while grinding.")
     elif l == 10: print("\nPROTIP: Special thanks to my programming classes for being so \nboring that I'd rather do this in secret than actual school work.")
-    elif l == 11: print("\nPROTIP: I had a cat named coochie.")
-    elif l == 12: print("\nPROTIP: You're hot then you're cold, you're yes then you're no.")
-    elif l == 13: print("\nI KISSED A GIRL: And I liked it.")
-    elif l == 14: print("\nHungUp On Thread 4\nRCP is HUNG UP!!\nOh, MY GOD!!")
-    elif l == 15: print("\nPROTIP: Avoid crying or pissing your pants. Don't shit or cum, either.")
-    elif l == 16: print("\nPROTIP: To the love of my life, my girlfriend and my future wife Mits. I dedicate every word of this program to you."
-                        "\nMaybe one day we'll play it side by side. <3");
+    elif l == 11: print("\nHungUp On Thread 4\nRCP is HUNG UP!!\nOh, MY GOD!!")
+    elif l == 12: print("\nPROTIP: Avoid crying or pissing your pants. Don't shit or cum, either.")
     else: print("\nCouldn't load tips for some reason.")
 
 
